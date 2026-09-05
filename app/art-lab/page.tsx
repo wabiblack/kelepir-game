@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./page.module.css";
 import { assetPackMeta, customerPackPreview, kenneyGenericItems } from "@/data/assetPacks";
 
 export default function ArtLabPage() {
@@ -15,8 +16,8 @@ export default function ArtLabPage() {
         <Link className="asset-lab-back" href="/">Oyuna dön</Link>
       </header>
 
-      <section className="asset-pack-switcher">
-        <article className="asset-pack-card">
+      <section className={styles.switcher}>
+        <article className={styles.card}>
           <div>
             <p className="eyebrow">EŞYALAR</p>
             <h2>{assetPackMeta.kenneyGenericItems.name}</h2>
@@ -25,8 +26,8 @@ export default function ArtLabPage() {
           <strong>{assetPackMeta.kenneyGenericItems.itemCount} asset</strong>
         </article>
 
-        <Link className="asset-pack-card customer-pack-link" href="/art-lab/customers">
-          <div className="asset-pack-thumb">
+        <Link className={`${styles.card} ${styles.customerLink}`} href="/art-lab/customers">
+          <div className={styles.thumb}>
             <img src={customerPackPreview} alt="Müşteri karakter paketi" />
           </div>
           <div>
