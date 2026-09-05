@@ -1,9 +1,16 @@
 export const pixelAssetSources = {
-  brysiaRooms: {
-    name: "Pixel Cartoon Rooms",
-    author: "Brysia",
-    source: "https://brysiaa.itch.io/pixel-cartoon-rooms",
-    licenseNote: "Free for personal and commercial projects; edits allowed; do not resell or redistribute the asset files.",
+  crazyDuckBedroom: {
+    name: "Bedroom - Day of the Tentacle style",
+    author: "crazyduckgames",
+    source: "https://opengameart.org/content/bedroom-day-of-the-tentacle-style",
+    license: "CC-BY-SA-4.0 / CC-BY-SA-3.0",
+    attribution: "https://crazy-duck-games.itch.io/",
+  },
+  openPixelProject: {
+    name: "OPP 2017 - Village and room",
+    author: "Open Pixel Project",
+    source: "https://openpixelproject.itch.io/opp2017village",
+    license: "Public Domain / CC0",
   },
   grafxKidCity: {
     name: "City Mega Pack",
@@ -21,10 +28,10 @@ export const pixelAssetSources = {
 
 export const pixelAssets = {
   room: {
-    // Brysia's second side-view room example is preferred. The first example is a
-    // verified fallback so the room never drops back to the old isometric art.
-    scene: "https://img.itch.zone/aW1nLzExNjI3NDA5LnBuZw%3D%3D/original/n%2FjGoX.png",
-    fallbackScene: "https://img.itch.zone/aW1nLzExNjI3NDAzLnBuZw%3D%3D/original/uLd%2F7t.png",
+    // Direct static image URLs only. The previous itch.zone hotlinks could expire
+    // and produced a broken-image screen on iOS Safari.
+    scene: "https://opengameart.org/sites/default/files/bedroom.png",
+    fallbackScene: "https://www.openpixelproject.com/wp-content/uploads/room01.png",
   },
   city: {
     megaSheet: "https://opengameart.org/sites/default/files/CITY_MEGA.png",
