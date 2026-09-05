@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import FirstMarketSale from "@/components/FirstMarketSale";
+import GameButton from "@/components/ui/GameButton";
 
 type Scene = "menu" | "intro" | "room" | "market";
 
@@ -67,9 +68,9 @@ export default function Home() {
           <p className="eyebrow">KAVŞAK • 2002</p>
           <h1>KELEPİR</h1>
           <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
-          <button className="primary-button" onClick={startGame}>Yeni Oyun</button>
+          <GameButton onClick={startGame}>Yeni Oyun</GameButton>
           <Link className="asset-lab-link" href="/art-lab">Ücretsiz asset paketini aç</Link>
-          <span className="version">prototip v0.4 • ilk pazarlık</span>
+          <span className="version">prototip v0.5 • Kenney UI</span>
         </section>
       </main>
     );
@@ -185,28 +186,28 @@ export default function Home() {
               </dl>
 
               {!cleanedPlayer ? (
-                <button
-                  className="secondary-button"
+                <GameButton
+                  variant="secondary"
                   onClick={() => {
                     setCleanedPlayer(true);
                     setMessage("Bezi ıslatıp kasayı dikkatlice sildin. Toz gidince cihazın gövdesi düşündüğünden daha iyi durumda çıktı.");
                   }}
                 >
                   Temizle
-                </button>
+                </GameButton>
               ) : !familyPermission ? (
-                <button className="secondary-button" onClick={askFamily}>Evdekilere satabilir miyim diye sor</button>
+                <GameButton variant="secondary" onClick={askFamily}>Evdekilere satabilir miyim diye sor</GameButton>
               ) : (
                 <>
-                  <button
-                    className="secondary-button"
+                  <GameButton
+                    variant="primary"
                     onClick={() => {
                       setScene("market");
                       setMessage("Raksen'i koltuğunun altına alıp Cumartesi Pazarı'nın yolunu tuttun.");
                     }}
                   >
                     Cumartesi Pazarı&apos;na götür
-                  </button>
+                  </GameButton>
                   <div className="next-hint">
                     <strong>Risk</strong>
                     <span>Cihazı pil ile test etmedin. Alıcı bunu pazarlıkta kullanabilir.</span>
