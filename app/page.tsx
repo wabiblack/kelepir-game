@@ -8,7 +8,6 @@ import OpeningScene from "@/components/OpeningScene";
 
 type Scene = "menu" | "intro" | "room" | "market" | "sandbox";
 
-const roomAsset = "assets/rooms/eskiyaka/room_2002.svg";
 const playerDirtyAsset = "assets/items/cassette/raksen-rx40/dirty.svg";
 const playerCleanAsset = "assets/items/cassette/raksen-rx40/clean.svg";
 
@@ -142,7 +141,6 @@ export default function Home() {
       </header>
 
       <RoomHome
-        roomAsset={roomAsset}
         playerDirtyAsset={playerDirtyAsset}
         playerCleanAsset={playerCleanAsset}
         message={message}
