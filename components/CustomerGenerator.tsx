@@ -77,6 +77,23 @@ type GeneratedCustomer = {
   shirt: (typeof customerShirtSamples)[number];
 };
 
+const initialCustomer: GeneratedCustomer = {
+  id: 1,
+  name: "Murat Kaya",
+  role: "Mahalleli",
+  age: 34,
+  attitude: "Sıkı pazarlıkçı",
+  motive: "Nakit lazım",
+  budget: 1850,
+  patience: 6,
+  knowledge: 4,
+  trust: 5,
+  skin: customerSkinHeads[2],
+  face: customerFaces[1],
+  hair: customerHairSamples[3],
+  shirt: customerShirtSamples[4],
+};
+
 function makeCustomer(id = Date.now()): GeneratedCustomer {
   return {
     id,
@@ -105,7 +122,7 @@ function Meter({ value }: { value: number }) {
 }
 
 export default function CustomerGenerator() {
-  const [customer, setCustomer] = useState<GeneratedCustomer>(() => makeCustomer(1));
+  const [customer, setCustomer] = useState<GeneratedCustomer>(initialCustomer);
   const [history, setHistory] = useState<GeneratedCustomer[]>([]);
 
   const initials = useMemo(
