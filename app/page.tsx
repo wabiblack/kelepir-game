@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import FirstMarketSale from "@/components/FirstMarketSale";
 import SandboxMarket from "@/components/SandboxMarket";
 import RoomHome from "@/components/RoomHome";
-import GameButton from "@/components/ui/GameButton";
-import { worldAssets } from "@/data/worldAssets";
+import OpeningScene from "@/components/OpeningScene";
 
 type Scene = "menu" | "intro" | "room" | "market" | "sandbox";
 
@@ -71,38 +69,11 @@ export default function Home() {
   };
 
   if (scene === "menu") {
-    return (
-      <main className="menu-screen">
-        <div className="menu-world-art" aria-hidden="true">
-          <img src={worldAssets.menuScene} alt="" />
-        </div>
-        <div className="menu-world-shade" />
-        <div className="grain" />
-        <section className="menu-card">
-          <p className="eyebrow">KAVŞAK • 2002</p>
-          <h1>KELEPİR</h1>
-          <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
-          <GameButton onClick={startGame}>Yeni Oyun</GameButton>
-          <Link className="asset-lab-link" href="/art-lab">Asset arşivi</Link>
-          <span className="version">prototip v0.8 • asset tabanlı dünya</span>
-        </section>
-      </main>
-    );
+    return <OpeningScene mode="menu" onStart={startGame} />;
   }
 
   if (scene === "intro") {
-    return (
-      <main className="intro-screen">
-        <img className="intro-world-art" src={worldAssets.cityPreview} alt="Kavşak şehrinin retro şehir görünümü" />
-        <div className="intro-world-shade" />
-        <img className="intro-truck" src={worldAssets.props.truckGreen} alt="" aria-hidden="true" />
-        <section className="intro-title-card">
-          <p>03 MART 2002</p>
-          <h2>KAVŞAK</h2>
-          <span>Eskiyaka Mahallesi</span>
-        </section>
-      </main>
-    );
+    return <OpeningScene mode="intro" />;
   }
 
   if (scene === "market") {
