@@ -1,0 +1,191 @@
+.screen {
+  min-height: 100vh;
+  padding: 28px clamp(14px, 4vw, 52px) 70px;
+  color: #f0eadf;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(132, 118, 81, .13), transparent 26%),
+    #151612;
+}
+
+.hero,
+.roles,
+.partSection,
+.facialHair,
+.systemNote {
+  width: min(1280px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  gap: 26px;
+  margin-top: 24px;
+  padding: 20px;
+  background: #1d1e19;
+  border: 1px solid rgba(255,255,255,.09);
+}
+
+.packPreview {
+  display: grid;
+  place-items: center;
+  min-height: 330px;
+  padding: 20px;
+  background: #ece7dc;
+  overflow: hidden;
+}
+
+.packPreview img {
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+}
+
+.packCopy h2,
+.facialHair h2 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 48px);
+  letter-spacing: -.04em;
+}
+
+.packCopy > p:not(:first-child),
+.facialHair p {
+  color: #aaa79e;
+  line-height: 1.55;
+}
+
+.packCopy dl {
+  margin: 20px 0 0;
+}
+
+.packCopy dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+.packCopy dt { color: #8f8c84; }
+.packCopy dd { margin: 0; font-weight: 900; }
+
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.roles span {
+  padding: 7px 10px;
+  color: #c7c1b5;
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.08);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.partSection {
+  margin-top: 30px;
+}
+
+.partHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.partHeading h2 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -.03em;
+}
+
+.partHeading span {
+  color: #8e8b82;
+  font-size: 11px;
+}
+
+.partGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.partCard {
+  padding: 9px;
+  background: #1d1e19;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.partPreview {
+  display: grid;
+  place-items: center;
+  min-height: 125px;
+  padding: 12px;
+  background: #d9d3c7;
+}
+
+.partPreview img {
+  width: 100%;
+  height: 105px;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
+.partCard strong {
+  display: block;
+  margin-top: 8px;
+  color: #c9c4b9;
+  font-size: 11px;
+}
+
+.facialHair {
+  display: grid;
+  grid-template-columns: minmax(250px, .8fr) minmax(0, 1.2fr);
+  gap: 22px;
+  align-items: center;
+  margin-top: 34px;
+  padding: 20px;
+  background: #1d1e19;
+  border: 1px solid rgba(255,255,255,.09);
+}
+
+.facialHair img {
+  width: 100%;
+  max-height: 330px;
+  object-fit: contain;
+  background: #ece7dc;
+}
+
+.systemNote {
+  margin-top: 18px;
+  padding: 17px 18px;
+  color: #d5d0c5;
+  background: #24251f;
+  border-left: 4px solid #61705a;
+}
+
+.systemNote strong {
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+
+.systemNote p {
+  margin: 6px 0 0;
+  color: #aaa79e;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .hero,
+  .facialHair {
+    grid-template-columns: 1fr;
+  }
+
+  .packPreview { min-height: 220px; }
+  .partGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
