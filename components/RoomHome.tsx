@@ -1,12 +1,10 @@
 "use client";
 
 import GameButton from "@/components/ui/GameButton";
-import { worldAssets } from "@/data/worldAssets";
+import { pixelAssets } from "@/data/pixelAssets";
 import styles from "./RoomHome.module.css";
 
 type Props = {
-  playerDirtyAsset: string;
-  playerCleanAsset: string;
   message: string;
   foundPlayer: boolean;
   cleanedPlayer: boolean;
@@ -22,8 +20,6 @@ type Props = {
 };
 
 export default function RoomHome({
-  playerDirtyAsset,
-  playerCleanAsset,
   message,
   foundPlayer,
   cleanedPlayer,
@@ -37,67 +33,55 @@ export default function RoomHome({
   onGoMarket,
   onGoSandbox,
 }: Props) {
-  const itemAsset = cleanedPlayer ? playerCleanAsset : playerDirtyAsset;
+  const spriteStyle = { backgroundImage: `url(${pixelAssets.electronics.miscSheet})` };
 
   return (
     <section className={styles.shell}>
       <div className={styles.sceneFrame}>
-        <div className={styles.scene} aria-label="Eskiyaka'daki küçük oda">
-          <div className={styles.backdrop} aria-hidden="true">
-            <img className={styles.wallLeft} src={worldAssets.interior.wallWindow} alt="" />
-            <img className={styles.wallRight} src={worldAssets.interior.wall} alt="" />
-            <img className={styles.floorOne} src={worldAssets.interior.floor} alt="" />
-            <img className={styles.floorTwo} src={worldAssets.interior.floor} alt="" />
-            <img className={styles.floorThree} src={worldAssets.interior.floor} alt="" />
-            <img className={styles.rug} src={worldAssets.interior.rug} alt="" />
+        <div className={styles.scene} aria-label="Eskiyaka'daki küçük oda, karşıdan 2D pixel görünüm">
+          <img
+            className={styles.roomArt}
+            src={pixelAssets.room.scene}
+            alt="Eskiyaka'daki küçük pixel art oda"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = pixelAssets.room.fallbackScene;
+            }}
+          />
+
+          <div className={styles.sceneTag} aria-hidden="true">
+            <span>ESKİYAKA</span>
+            <strong>ODA</strong>
           </div>
 
-          <img className={styles.bookcase} src={worldAssets.interior.bookcase} alt="Kitaplık" />
-          <img className={styles.books} src={worldAssets.interior.books} alt="" aria-hidden="true" />
-
-          <div className={styles.tvCorner} aria-hidden="true">
-            <img className={styles.tvCabinet} src={worldAssets.interior.tvCabinet} alt="" />
-            <img className={styles.vintageTv} src={worldAssets.interior.vintageTv} alt="" />
-            <img className={styles.tvAntenna} src={worldAssets.interior.tvAntenna} alt="" />
-          </div>
-
-          <button className={`${styles.propButton} ${styles.bed}`} onClick={onInspectBed} aria-label="Yatağın altına bak">
-            <img src={worldAssets.interior.bedSingle} alt="Tek kişilik yatak" />
-            <span>Yatak</span>
+          <button className={`${styles.hotspot} ${styles.bedHotspot}`} type="button" onClick={onInspectBed}>
+            <span>Yatak altı</span>
           </button>
 
-          <button className={`${styles.propButton} ${styles.desk}`} onClick={onInspectDesk} aria-label="Masayı incele">
-            <img className={styles.deskAsset} src={worldAssets.interior.desk} alt="Çalışma masası" />
-            <img className={styles.deskLamp} src={worldAssets.interior.tableLamp} alt="" aria-hidden="true" />
-            <img className={styles.deskRadio} src={worldAssets.interior.radio} alt="" aria-hidden="true" />
+          <button className={`${styles.hotspot} ${styles.deskHotspot}`} type="button" onClick={onInspectDesk}>
             <span>Masa</span>
           </button>
 
-          <img className={styles.deskChair} src={worldAssets.interior.deskChair} alt="Masa sandalyesi" />
-
-          <button className={`${styles.propButton} ${styles.drawer}`} onClick={onInspectDrawer} aria-label="Çekmeceyi karıştır">
-            <img src={worldAssets.interior.sideTableDrawers} alt="Çekmeceli komodin" />
+          <button className={`${styles.hotspot} ${styles.drawerHotspot}`} type="button" onClick={onInspectDrawer}>
             <span>Çekmece</span>
           </button>
 
-          <img className={styles.floorLamp} src={worldAssets.interior.floorLamp} alt="Ayaklı lamba" />
-          <img className={styles.boxOpen} src={worldAssets.interior.boxOpen} alt="Açık karton kutu" />
-          <img className={styles.boxClosed} src={worldAssets.interior.boxClosed} alt="Kapalı karton kutu" />
-          <img className={styles.plant} src={worldAssets.interior.smallPlant} alt="Küçük saksı bitkisi" />
-          <img className={styles.trashcan} src={worldAssets.interior.trashcan} alt="Çöp kovası" />
-
           {firstItemSold ? (
-            <button className={`${styles.propButton} ${styles.door}`} onClick={onGoSandbox} aria-label="Bit pazarına çık">
-              <img src={worldAssets.interior.doorway} alt="Oda kapısı" />
+            <button className={`${styles.hotspot} ${styles.doorHotspot}`} type="button" onClick={onGoSandbox}>
               <span>Bit Pazarı</span>
             </button>
           ) : (
-            <img className={styles.doorDecor} src={worldAssets.interior.doorway} alt="Oda kapısı" />
+            <div className={`${styles.hotspot} ${styles.doorHotspot} ${styles.lockedHotspot}`} aria-hidden="true">
+              <span>Kapı</span>
+            </div>
           )}
 
           {foundPlayer && (
-            <div className={styles.foundItem} aria-label="Bulduğun Raksen RX-40">
-              <img src={itemAsset} alt="Raksen RX-40 kasetçalar" />
+            <div className={`${styles.foundItem} ${cleanedPlayer ? styles.cleanedItem : ""}`} aria-label="Bulduğun Raksen RX-40 kasetçalar">
+              <div className={styles.pixelSpriteBox}>
+                <span className={styles.boomboxSprite} style={spriteStyle} />
+              </div>
+              <small>RAKSEN RX-40</small>
             </div>
           )}
         </div>
@@ -112,11 +96,11 @@ export default function RoomHome({
         {foundPlayer && (
           <div className={styles.itemTray}>
             <div className={styles.itemThumb}>
-              <img src={itemAsset} alt="Raksen RX-40" />
+              <span className={`${styles.boomboxSprite} ${cleanedPlayer ? styles.cleanSprite : ""}`} style={spriteStyle} />
             </div>
             <div className={styles.itemMeta}>
               <strong>Raksen RX-40</strong>
-              <span>{cleanedPlayer ? "Temiz" : "Kirli"} • Çalışması bilinmiyor</span>
+              <span>{cleanedPlayer ? "Temiz" : "Tozlu"} • Çalışması bilinmiyor</span>
               <small>Satış izni: {familyPermission ? "var" : "yok"}</small>
             </div>
             <div className={styles.itemAction}>
@@ -134,8 +118,8 @@ export default function RoomHome({
         {firstItemSold && !foundPlayer && (
           <div className={styles.marketDock}>
             <div>
-              <strong>Bit Pazarı</strong>
-              <span>Kapıya dokun veya doğrudan pazara çık.</span>
+              <strong>Bit Pazarı açık</strong>
+              <span>Kapıya dokun veya buradan doğrudan çık.</span>
             </div>
             <GameButton className={styles.compactButton} onClick={onGoSandbox}>Pazara çık</GameButton>
           </div>
