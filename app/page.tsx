@@ -77,19 +77,9 @@ export default function Home() {
   if (scene === "market") {
     return (
       <main className="game-screen">
-        <header className="hud">
-          <div>
-            <strong>03 Mart 2002</strong>
-            <span>Pazar • 11:06 • Cumartesi Pazarı</span>
-          </div>
-          <div className="hud-right">
-            <span className="status-chip">İlk satış peşinde</span>
-            <div className="money">{money.toLocaleString("tr-TR")} ₺</div>
-          </div>
-        </header>
-
         <FirstMarketSale
           itemAsset={playerCleanAsset}
+          money={money}
           onSold={completeFirstSale}
           onLeave={() => {
             setScene("room");
