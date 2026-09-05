@@ -1,0 +1,73 @@
+.button {
+  position: relative;
+  min-width: 132px;
+  min-height: 46px;
+  padding: 10px 18px 12px;
+  border: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #f7f2e8;
+  font: inherit;
+  font-weight: 900;
+  letter-spacing: .015em;
+  text-shadow: 0 1px 0 rgba(0,0,0,.28);
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease;
+}
+
+.button span {
+  position: relative;
+  z-index: 1;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.button:active {
+  transform: translateY(1px) scale(.99);
+  filter: brightness(.96);
+}
+
+.button:focus-visible {
+  outline: 2px solid #e7d9b2;
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(.8) brightness(.75);
+  opacity: .65;
+}
+
+.primary {
+  background-image: url("https://raw.githubusercontent.com/eturner58/game-assets/fc2cd355a8e7c1d8e625fd650abf64f50a1fddaa/kenney/UI%20assets/UI%20Pack/PNG/Green/Default/button_rectangle_depth_flat.png");
+}
+
+.secondary {
+  color: #292b27;
+  text-shadow: none;
+  background-image: url("https://raw.githubusercontent.com/eturner58/game-assets/fc2cd355a8e7c1d8e625fd650abf64f50a1fddaa/kenney/UI%20assets/UI%20Pack/PNG/Grey/Default/button_rectangle_depth_flat.png");
+}
+
+.danger {
+  background-image: url("https://raw.githubusercontent.com/eturner58/game-assets/fc2cd355a8e7c1d8e625fd650abf64f50a1fddaa/kenney/UI%20assets/UI%20Pack/PNG/Red/Default/button_rectangle_depth_flat.png");
+}
+
+.quiet {
+  color: #d8d3c8;
+  background-image: url("https://raw.githubusercontent.com/eturner58/game-assets/fc2cd355a8e7c1d8e625fd650abf64f50a1fddaa/kenney/UI%20assets/UI%20Pack/PNG/Grey/Default/button_rectangle_border.png");
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .button {
+    min-width: 0;
+    width: 100%;
+  }
+}
