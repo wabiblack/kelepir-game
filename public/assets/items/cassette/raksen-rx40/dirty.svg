@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="title desc">
+  <title id="title">Raksen RX-40 kirli kasetçalar</title>
+  <desc id="desc">1990'lardan kalma, yoğun tozlu ve yıpranmış iki hoparlörlü taşınabilir stereo kasetçalar.</desc>
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#454841"/>
+      <stop offset=".5" stop-color="#292c27"/>
+      <stop offset="1" stop-color="#191b18"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6f7169"/>
+      <stop offset="1" stop-color="#444741"/>
+    </linearGradient>
+    <radialGradient id="speaker" cx="50%" cy="45%" r="58%">
+      <stop offset="0" stop-color="#252722"/>
+      <stop offset=".7" stop-color="#10110f"/>
+      <stop offset="1" stop-color="#050605"/>
+    </radialGradient>
+    <pattern id="mesh" width="10" height="10" patternUnits="userSpaceOnUse">
+      <circle cx="5" cy="5" r="2.2" fill="#444740"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="20" stdDeviation="15" flood-color="#000" flood-opacity=".38"/>
+    </filter>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c1b59b" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#282a26" stop-opacity=".58"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="380" cy="370" rx="300" ry="30" fill="#0a0a08" opacity=".3"/>
+  <g filter="url(#shadow)">
+    <path d="M216 92V55c0-23 18-41 41-41h246c23 0 41 18 41 41v37" fill="none" stroke="#1d201c" stroke-width="28" stroke-linecap="round"/>
+    <path d="M229 83V59c0-14 11-25 25-25h252c14 0 25 11 25 25v24" fill="none" stroke="#4c5048" stroke-width="8" stroke-linecap="round"/>
+    <rect x="70" y="78" width="620" height="274" rx="28" fill="url(#body)" stroke="#0d0f0c" stroke-width="12"/>
+    <rect x="89" y="98" width="582" height="35" rx="8" fill="#171915"/>
+    <text x="118" y="122" fill="#b8b19f" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">RAKSEN</text>
+    <text x="577" y="121" fill="#878b80" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2">RX-40</text>
+    <rect x="225" y="105" width="310" height="22" rx="4" fill="#8f8b78"/>
+    <path d="M242 116h273" stroke="#3a3c37" stroke-width="2"/>
+    <rect x="401" y="107" width="3" height="18" fill="#874036"/>
+
+    <circle cx="190" cy="233" r="91" fill="url(#speaker)" stroke="#090a08" stroke-width="12"/>
+    <circle cx="190" cy="233" r="77" fill="url(#mesh)" opacity=".85"/>
+    <circle cx="570" cy="233" r="91" fill="url(#speaker)" stroke="#090a08" stroke-width="12"/>
+    <circle cx="570" cy="233" r="77" fill="url(#mesh)" opacity=".85"/>
+    <circle cx="190" cy="233" r="18" fill="#11120f" stroke="#55594f" stroke-width="4"/>
+    <circle cx="570" cy="233" r="18" fill="#11120f" stroke="#55594f" stroke-width="4"/>
+
+    <rect x="300" y="154" width="160" height="154" rx="10" fill="#10120f" stroke="#5d6158" stroke-width="7"/>
+    <rect x="316" y="174" width="128" height="108" rx="6" fill="url(#glass)" stroke="#222420" stroke-width="4"/>
+    <rect x="336" y="199" width="88" height="59" rx="5" fill="#a79c83" opacity=".68"/>
+    <circle cx="357" cy="229" r="15" fill="#2a2c27" stroke="#c0b59c" stroke-width="5"/>
+    <circle cx="403" cy="229" r="15" fill="#2a2c27" stroke="#c0b59c" stroke-width="5"/>
+    <path d="M372 225h16" stroke="#4b4d47" stroke-width="4"/>
+
+    <g fill="url(#panel)" stroke="#151713" stroke-width="3">
+      <rect x="267" y="65" width="34" height="24" rx="4"/>
+      <rect x="307" y="65" width="34" height="24" rx="4"/>
+      <rect x="347" y="65" width="34" height="24" rx="4"/>
+      <rect x="387" y="65" width="34" height="24" rx="4"/>
+      <rect x="427" y="65" width="34" height="24" rx="4"/>
+      <rect x="467" y="65" width="34" height="24" rx="4"/>
+    </g>
+
+    <circle cx="622" cy="157" r="19" fill="#151714" stroke="#666a60" stroke-width="4"/>
+    <circle cx="655" cy="157" r="13" fill="#151714" stroke="#666a60" stroke-width="4"/>
+
+    <!-- scratches -->
+    <g stroke="#a59b83" stroke-opacity=".38" stroke-linecap="round">
+      <path d="M115 148l78-25M129 166l54-18M518 130l61-18M605 290l48-16M262 325l65-10" stroke-width="3"/>
+      <path d="M467 145l40-12M224 292l52-9M96 303l44-11" stroke-width="2"/>
+    </g>
+
+    <!-- dust patches -->
+    <g fill="#c2ad82" opacity=".34">
+      <ellipse cx="156" cy="127" rx="54" ry="17" transform="rotate(-8 156 127)"/>
+      <ellipse cx="595" cy="105" rx="46" ry="14" transform="rotate(7 595 105)"/>
+      <ellipse cx="270" cy="338" rx="72" ry="12"/>
+      <ellipse cx="497" cy="334" rx="61" ry="11"/>
+      <ellipse cx="380" cy="166" rx="55" ry="9"/>
+    </g>
+    <g fill="#a78e63" opacity=".28">
+      <circle cx="110" cy="206" r="9"/><circle cx="135" cy="194" r="5"/><circle cx="645" cy="237" r="7"/>
+      <circle cx="536" cy="321" r="6"/><circle cx="311" cy="143" r="5"/><circle cx="432" cy="316" r="8"/>
+    </g>
+  </g>
+</svg>
