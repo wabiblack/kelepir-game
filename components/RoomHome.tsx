@@ -34,7 +34,7 @@ export default function RoomHome({
   onGoMarket,
   onGoSandbox,
 }: Props) {
-  const [roomSrc, setRoomSrc] = useState(pixelAssets.room.scene);
+  const [roomSrc, setRoomSrc] = useState<string>(pixelAssets.room.scene);
   const [roomVisible, setRoomVisible] = useState(true);
 
   function handleRoomError() {
