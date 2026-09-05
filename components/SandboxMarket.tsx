@@ -3,6 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import GameButton from "@/components/ui/GameButton";
 import {
+  customerFaces,
+  customerHairSamples,
+  customerShirtSamples,
+  customerSkinHeads,
+} from "@/data/assetPacks";
+import { worldAssets } from "@/data/worldAssets";
+import {
   generateBuyerOffer,
   generateMarketOffers,
   inspectMarketOffer,
@@ -27,7 +34,7 @@ type StoredEconomy = {
   ledger: LedgerEntry[];
 };
 
-const STORAGE_KEY = "kelepir-economy-v1";
+const STORAGE_KEY = "kelepir-economy-v2";
 
 function round5(value: number) {
   return Math.max(5, Math.round(value / 5) * 5);
@@ -42,14 +49,32 @@ function loadStoredEconomy(): StoredEconomy | null {
   }
 }
 
+function SellerPortrait({ index }: { index: number }) {
+  const skin = customerSkinHeads[index % customerSkinHeads.length];
+  const face = customerFaces[index % customerFaces.length];
+  const hair = customerHairSamples[index % customerHairSamples.length];
+  const shirt = customerShirtSamples[index % customerShirtSamples.length];
+
+  return (
+    <div className={styles.sellerPortrait} aria-hidden="true">
+      <img className={styles.sellerShirt} src={shirt.src} alt="" />
+      <img className={styles.sellerHead} src={skin.src} alt="" />
+      <img className={styles.sellerFace} src={face.src} alt="" />
+      <img className={styles.sellerHair} src={hair.src} alt="" />
+    </div>
+  );
+}
+
 export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) {
+  const initialOffers = useMemo(() => generateMarketOffers(), []);
   const [tab, setTab] = useState<Tab>("market");
-  const [offers, setOffers] = useState<MarketOffer[]>(() => generateMarketOffers());
+  const [offers, setOffers] = useState<MarketOffer[]>(initialOffers);
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(initialOffers[0]?.id ?? null);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [ledger, setLedger] = useState<LedgerEntry[]>([]);
   const [buyerOffers, setBuyerOffers] = useState<Record<string, number>>({});
   const [roundsLeft, setRoundsLeft] = useState(3);
-  const [notice, setNotice] = useState("İlk sermayen cebinde. Artık ne alacağına sen karar veriyorsun.");
+  const [notice, setNotice] = useState("İlk sermayen cebinde. Tezgâha yaklaş, mala bak, fiyatı kafanda tart.");
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -71,13 +96,16 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
     [ledger],
   );
 
+  const selectedOffer = offers.find((offer) => offer.id === selectedOfferId) ?? offers[0] ?? null;
+  const selectedIndex = selectedOffer ? Math.max(0, offers.findIndex((offer) => offer.id === selectedOffer.id)) : 0;
+
   function updateOffer(id: string, updater: (offer: MarketOffer) => MarketOffer) {
     setOffers((current) => current.map((offer) => offer.id === id ? updater(offer) : offer));
   }
 
   function inspect(offer: MarketOffer) {
     updateOffer(offer.id, inspectMarketOffer);
-    setNotice(`${offer.name} için hızlı kontrol yaptın. Artık risk ve yaklaşık piyasa değeri hakkında daha fazla fikrin var.`);
+    setNotice(`${offer.name} için hızlı kontrol yaptın. Kusur ihtimali ve piyasa aralığı artık daha net.`);
   }
 
   function completePurchase(offer: MarketOffer, paidPrice: number) {
@@ -87,11 +115,13 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
     }
 
     const stock = makeInventoryItem(offer, paidPrice, "03 Mart 2002");
+    const remaining = offers.filter((item) => item.id !== offer.id);
     onMoneyChange(money - paidPrice);
     setInventory((current) => [stock, ...current]);
-    setLedger((current) => [makeLedgerEntry("buy", offer.name, paidPrice, "Cumartesi Pazarı"), ...current]);
-    setOffers((current) => current.filter((item) => item.id !== offer.id));
-    setNotice(`${offer.seller} ile ${paidPrice} ₺'ye anlaştın. ${offer.name} artık envanterinde.`);
+    setLedger((current) => [makeLedgerEntry("buy", offer.name, paidPrice, "Eskiyaka Bit Pazarı"), ...current]);
+    setOffers(remaining);
+    setSelectedOfferId(remaining[0]?.id ?? null);
+    setNotice(`${offer.seller} ile ${paidPrice} ₺'ye anlaştın. ${offer.name} artık senin.`);
   }
 
   function bargain(offer: MarketOffer, discount: 0 | 10 | 20) {
@@ -103,8 +133,10 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
     }
 
     if (offer.patience <= 1) {
-      setOffers((current) => current.filter((item) => item.id !== offer.id));
-      setNotice(`${offer.seller}, ${proposed} ₺ teklifine bozuldu ve malı toplayıp başka tarafa geçti.`);
+      const remaining = offers.filter((item) => item.id !== offer.id);
+      setOffers(remaining);
+      setSelectedOfferId(remaining[0]?.id ?? null);
+      setNotice(`${offer.seller}, ${proposed} ₺ teklifine bozuldu. Malı kaldırıp başka tarafa geçti.`);
       return;
     }
 
@@ -115,13 +147,22 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
 
   function refreshMarket() {
     if (roundsLeft <= 0) {
-      setNotice("Pazar seyrekleşti. Bugün yeni fırsat çıkmıyor.");
+      setNotice("Pazar seyrekleşti. Bugün yeni mal açılmıyor.");
       return;
     }
 
-    setOffers(generateMarketOffers());
+    const nextOffers = generateMarketOffers();
+    setOffers(nextOffers);
+    setSelectedOfferId(nextOffers[0]?.id ?? null);
     setRoundsLeft((current) => current - 1);
-    setNotice("Tezgâhları bir tur daha dolaştın. Satıcılar ve mallar değişti.");
+    setNotice("Pazarı bir tur dolaştın. Önüne başka mallar ve satıcılar çıktı.");
+  }
+
+  function nextStall() {
+    if (offers.length < 2 || !selectedOffer) return;
+    const nextIndex = (selectedIndex + 1) % offers.length;
+    setSelectedOfferId(offers[nextIndex].id);
+    setNotice(`${offers[nextIndex].seller}'in tezgâhına geçtin.`);
   }
 
   function askBuyer(item: InventoryItem) {
@@ -146,7 +187,7 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
     const profit = amount - item.purchasePrice;
     onMoneyChange(money + amount);
     setInventory((current) => current.filter((stock) => stock.id !== item.id));
-    setLedger((current) => [makeLedgerEntry("sell", item.name, amount, "Cumartesi Pazarı", profit), ...current]);
+    setLedger((current) => [makeLedgerEntry("sell", item.name, amount, "Eskiyaka Bit Pazarı", profit), ...current]);
     setBuyerOffers((current) => {
       const next = { ...current };
       delete next[item.id];
@@ -157,84 +198,106 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
 
   return (
     <section className={styles.screen}>
-      <header className={styles.header}>
+      <div className={styles.marketHeader}>
         <div>
-          <p className={styles.kicker}>SERBEST OYUN • ESKİYAKA</p>
-          <h2>Bit Pazarı</h2>
-          <p>Görev zinciri yok. Fırsatı gör, riski tart, paranı bağla ya da yürü geç.</p>
+          <span>ESKİYAKA • SERBEST OYUN</span>
+          <strong>Bit Pazarı</strong>
         </div>
-        <div className={styles.headerStats}>
-          <span>CÜZDAN <strong>{money.toLocaleString("tr-TR")} ₺</strong></span>
-          <span>STOK <strong>{inventory.length}</strong></span>
-          <span>NET KÂR <strong className={realizedProfit < 0 ? styles.negative : ""}>{realizedProfit.toLocaleString("tr-TR")} ₺</strong></span>
+        <div className={styles.quickStats}>
+          <span><b>{money.toLocaleString("tr-TR")} ₺</b>Cüzdan</span>
+          <span><b>{inventory.length}</b>Stok</span>
+          <span className={realizedProfit < 0 ? styles.negative : ""}><b>{realizedProfit.toLocaleString("tr-TR")} ₺</b>Net</span>
         </div>
-      </header>
-
-      <div className={styles.notice}>{notice}</div>
-
-      <nav className={styles.tabs} aria-label="Pazar bölümleri">
-        <button className={tab === "market" ? styles.activeTab : ""} onClick={() => setTab("market")}>Pazar</button>
-        <button className={tab === "inventory" ? styles.activeTab : ""} onClick={() => setTab("inventory")}>Envanter ({inventory.length})</button>
-        <button className={tab === "ledger" ? styles.activeTab : ""} onClick={() => setTab("ledger")}>Kasa defteri</button>
-      </nav>
+      </div>
 
       {tab === "market" && (
-        <div className={styles.marketArea}>
-          <div className={styles.marketToolbar}>
-            <div>
-              <span>PAZAR TURU</span>
-              <strong>{roundsLeft} yeni tur kaldı</strong>
+        <>
+          <div className={styles.sceneFrame}>
+            <div className={styles.marketScene}>
+              <img className={styles.backWall} src={worldAssets.architecture.wallA} alt="" aria-hidden="true" />
+              <img className={styles.backWallTwo} src={worldAssets.architecture.wallB} alt="" aria-hidden="true" />
+              <img className={styles.ground} src={worldAssets.roads.asphaltDamaged} alt="" aria-hidden="true" />
+              <img className={styles.awning} src={worldAssets.props.awningWide} alt="Pazar tentesi" />
+              <img className={styles.pallet} src={worldAssets.props.pallet} alt="Ahşap palet" />
+              <img className={styles.boxOne} src={worldAssets.interior.boxOpen} alt="Açık karton kutu" />
+              <img className={styles.boxTwo} src={worldAssets.interior.boxClosed} alt="Karton kutu" />
+              <img className={styles.truck} src={worldAssets.props.truckGreen} alt="Pazarın arkasında park etmiş eski kamyon" />
+
+              {selectedOffer ? (
+                <>
+                  <div className={styles.sellerSpot}>
+                    <SellerPortrait index={selectedIndex + 1} />
+                    <span>{selectedOffer.seller}</span>
+                  </div>
+                  <img className={styles.stallTable} src={worldAssets.interior.desk} alt="İkinci el tezgâhı" />
+                  <button className={styles.itemSpot} onClick={() => inspect(selectedOffer)} aria-label={`${selectedOffer.name} ürününü incele`}>
+                    <img src={selectedOffer.asset} alt={selectedOffer.name} />
+                    <span>{selectedOffer.askingPrice} ₺</span>
+                  </button>
+                  <div className={styles.sceneTag}>
+                    <span>{selectedOffer.category}</span>
+                    <strong>{selectedOffer.name}</strong>
+                    <small>{selectedOffer.condition}</small>
+                  </div>
+                </>
+              ) : (
+                <div className={styles.emptyMarket}>Tezgâhlar boşaldı. Yeni tur atabilirsin.</div>
+              )}
             </div>
-            <GameButton variant="secondary" onClick={refreshMarket} disabled={roundsLeft <= 0}>Tezgâhları dolaş</GameButton>
+
+            <div className={styles.sceneControls}>
+              <button type="button" onClick={nextStall} disabled={offers.length < 2}>Öteki tezgâh</button>
+              <span>{selectedOffer ? `${selectedIndex + 1} / ${offers.length}` : "0 / 0"}</span>
+              <button type="button" onClick={refreshMarket} disabled={roundsLeft <= 0}>Yeni tur • {roundsLeft}</button>
+            </div>
           </div>
 
-          <div className={styles.offerGrid}>
-            {offers.map((offer) => {
-              const rangeLow = round5(offer.expectedValue * 0.84);
-              const rangeHigh = round5(offer.expectedValue * 1.16);
+          <div className={styles.notice}>{notice}</div>
 
-              return (
-                <article className={styles.offerCard} key={offer.id}>
-                  <div className={styles.offerTop}>
-                    <span>{offer.category}</span>
-                    <small>{offer.seller}</small>
+          {selectedOffer && (() => {
+            const rangeLow = round5(selectedOffer.expectedValue * 0.84);
+            const rangeHigh = round5(selectedOffer.expectedValue * 1.16);
+            return (
+              <div className={styles.tradeSheet}>
+                <div className={styles.sheetTitle}>
+                  <div>
+                    <span>{selectedOffer.seller.toUpperCase()}</span>
+                    <strong>{selectedOffer.askingPrice} ₺ istiyor</strong>
                   </div>
-                  <h3>{offer.name}</h3>
-                  <p>{offer.description}</p>
+                  <small>Sabır {"●".repeat(selectedOffer.patience)}{"○".repeat(3 - selectedOffer.patience)}</small>
+                </div>
 
-                  <dl>
-                    <div><dt>İstenen</dt><dd>{offer.askingPrice} ₺</dd></div>
-                    <div><dt>Durum</dt><dd>{offer.condition}</dd></div>
-                    <div><dt>Satıcı sabrı</dt><dd>{"●".repeat(offer.patience)}{"○".repeat(3 - offer.patience)}</dd></div>
-                    {offer.inspected ? (
-                      <>
-                        <div><dt>Tahmini piyasa</dt><dd>{rangeLow}–{rangeHigh} ₺</dd></div>
-                        <div className={styles.issueRow}><dt>Kontrol</dt><dd>{offer.issueText}</dd></div>
-                      </>
-                    ) : (
-                      <div><dt>Gizli risk</dt><dd>?</dd></div>
-                    )}
-                  </dl>
+                <p>{selectedOffer.description}</p>
 
-                  <div className={styles.cardActions}>
-                    {!offer.inspected && <GameButton variant="secondary" onClick={() => inspect(offer)}>İncele</GameButton>}
-                    <GameButton onClick={() => bargain(offer, 0)} disabled={offer.askingPrice > money}>{offer.askingPrice} ₺ ver</GameButton>
-                    <GameButton variant="quiet" onClick={() => bargain(offer, 10)}>- %10 teklif</GameButton>
-                    <GameButton variant="quiet" onClick={() => bargain(offer, 20)}>- %20 teklif</GameButton>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </div>
+                <div className={styles.inspectLine}>
+                  {selectedOffer.inspected ? (
+                    <>
+                      <span>Tahmini piyasa <b>{rangeLow}–{rangeHigh} ₺</b></span>
+                      <span>Kontrol <b>{selectedOffer.issueText}</b></span>
+                    </>
+                  ) : (
+                    <button type="button" onClick={() => inspect(selectedOffer)}>Ürüne yakından bak</button>
+                  )}
+                </div>
+
+                <div className={styles.tradeActions}>
+                  <GameButton onClick={() => bargain(selectedOffer, 0)} disabled={selectedOffer.askingPrice > money}>{selectedOffer.askingPrice} ₺ ver</GameButton>
+                  <GameButton variant="secondary" onClick={() => bargain(selectedOffer, 10)}>- %10 teklif</GameButton>
+                  <GameButton variant="quiet" onClick={() => bargain(selectedOffer, 20)}>- %20 teklif</GameButton>
+                </div>
+              </div>
+            );
+          })()}
+        </>
       )}
 
       {tab === "inventory" && (
-        <div className={styles.inventoryArea}>
+        <div className={styles.panelArea}>
+          <div className={styles.panelTitle}><span>STOK</span><strong>Envanter</strong></div>
           {inventory.length === 0 ? (
             <div className={styles.emptyState}>
-              <strong>Stok boş</strong>
-              <p>Pazardan ilk malını aldığında burada görünecek.</p>
+              <strong>Henüz mal yok</strong>
+              <p>Bir tezgâhtan alış yaptığında burada göreceksin.</p>
               <GameButton onClick={() => setTab("market")}>Pazara dön</GameButton>
             </div>
           ) : (
@@ -242,30 +305,25 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
               {inventory.map((item) => {
                 const buyerOffer = buyerOffers[item.id];
                 return (
-                  <article className={styles.stockCard} key={item.id}>
-                    <div>
+                  <article className={styles.stockItem} key={item.id}>
+                    <div className={styles.stockVisual}><img src={item.asset || worldAssets.interior.radio} alt={item.name} /></div>
+                    <div className={styles.stockInfo}>
                       <span>{item.category}</span>
-                      <h3>{item.name}</h3>
-                      <small>{item.acquiredAt} • alış {item.purchasePrice} ₺</small>
+                      <strong>{item.name}</strong>
+                      <small>Alış {item.purchasePrice} ₺ • {item.condition}</small>
+                      <p>{item.inspected ? item.issueText : "Satın almadan önce tam incelenmedi."}</p>
                     </div>
-                    <dl>
-                      <div><dt>Durum</dt><dd>{item.condition}</dd></div>
-                      <div><dt>Bilinen risk</dt><dd>{item.inspected ? item.issueText : "Satın almadan önce tam incelenmedi."}</dd></div>
-                    </dl>
-
-                    {buyerOffer ? (
-                      <div className={styles.buyerOffer}>
-                        <span>ALICI TEKLİFİ</span>
-                        <strong>{buyerOffer} ₺</strong>
-                        <small>{buyerOffer - item.purchasePrice >= 0 ? "+" : ""}{buyerOffer - item.purchasePrice} ₺ potansiyel sonuç</small>
-                        <div>
+                    <div className={styles.stockAction}>
+                      {buyerOffer ? (
+                        <>
+                          <span>Alıcı {buyerOffer} ₺</span>
                           <GameButton onClick={() => sell(item)}>Sat</GameButton>
                           <GameButton variant="quiet" onClick={() => rejectBuyer(item)}>Reddet</GameButton>
-                        </div>
-                      </div>
-                    ) : (
-                      <GameButton variant="secondary" onClick={() => askBuyer(item)}>Pazarda alıcı ara</GameButton>
-                    )}
+                        </>
+                      ) : (
+                        <GameButton variant="secondary" onClick={() => askBuyer(item)}>Alıcı ara</GameButton>
+                      )}
+                    </div>
                   </article>
                 );
               })}
@@ -275,7 +333,8 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
       )}
 
       {tab === "ledger" && (
-        <div className={styles.ledgerArea}>
+        <div className={styles.panelArea}>
+          <div className={styles.panelTitle}><span>KASA</span><strong>Defter</strong></div>
           {ledger.length === 0 ? (
             <div className={styles.emptyState}><strong>Defter temiz</strong><p>İlk alışverişle birlikte hareketler burada tutulacak.</p></div>
           ) : (
@@ -293,10 +352,12 @@ export default function SandboxMarket({ money, onMoneyChange, onLeave }: Props) 
         </div>
       )}
 
-      <footer className={styles.footer}>
-        <p>Ürün görselleri yalnızca doğrulanmış hazır assetlerle bağlanacak. Yanlış görsel eşleştirmek yerine mekanik bağımsız tutuluyor.</p>
-        <GameButton variant="quiet" onClick={onLeave}>Eve dön</GameButton>
-      </footer>
+      <nav className={styles.bottomNav} aria-label="Pazar bölümleri">
+        <button className={tab === "market" ? styles.activeTab : ""} onClick={() => setTab("market")}><span>◉</span>Pazar</button>
+        <button className={tab === "inventory" ? styles.activeTab : ""} onClick={() => setTab("inventory")}><span>▣</span>Stok {inventory.length}</button>
+        <button className={tab === "ledger" ? styles.activeTab : ""} onClick={() => setTab("ledger")}><span>≡</span>Defter</button>
+        <button onClick={onLeave}><span>⌂</span>Ev</button>
+      </nav>
     </section>
   );
 }
