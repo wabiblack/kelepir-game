@@ -7,6 +7,7 @@ import {
   customerShirtSamples,
   customerSkinHeads,
 } from "@/data/assetPacks";
+import { generateDialogue, type DialogueSituation, type DialogueStyle } from "@/lib/dialogue";
 import styles from "./CustomerGenerator.module.css";
 
 const firstNames = [
@@ -52,6 +53,19 @@ const motives = [
   "Takas düşünüyor",
 ];
 
+const itemNames = [
+  "kasetçalar",
+  "21 ekran televizyon",
+  "VCD oynatıcı",
+  "cep telefonu",
+  "bisiklet",
+  "matkap",
+  "müzik seti",
+  "oyun konsolu",
+];
+
+const dialogueStyles: DialogueStyle[] = ["kisa", "geveze", "ukala", "kibar", "supheci", "aceleci", "pazarlikci"];
+
 function pick<T>(items: T[]) {
   return items[Math.floor(Math.random() * items.length)];
 }
@@ -71,6 +85,9 @@ type GeneratedCustomer = {
   patience: number;
   knowledge: number;
   trust: number;
+  dialogueStyle: DialogueStyle;
+  itemName: string;
+  askingPrice: number;
   skin: (typeof customerSkinHeads)[number];
   face: (typeof customerFaces)[number];
   hair: (typeof customerHairSamples)[number];
@@ -88,6 +105,9 @@ const initialCustomer: GeneratedCustomer = {
   patience: 6,
   knowledge: 4,
   trust: 5,
+  dialogueStyle: "pazarlikci",
+  itemName: "kasetçalar",
+  askingPrice: 180,
   skin: customerSkinHeads[2],
   face: customerFaces[1],
   hair: customerHairSamples[3],
@@ -95,6 +115,7 @@ const initialCustomer: GeneratedCustomer = {
 };
 
 function makeCustomer(id = Date.now()): GeneratedCustomer {
+  const budget = rand(35, 900) * 10;
   return {
     id,
     name: `${pick(firstNames)} ${pick(surnames)}`,
@@ -102,10 +123,13 @@ function makeCustomer(id = Date.now()): GeneratedCustomer {
     age: rand(18, 68),
     attitude: pick(attitudes),
     motive: pick(motives),
-    budget: rand(35, 900) * 10,
+    budget,
     patience: rand(1, 10),
     knowledge: rand(1, 10),
     trust: rand(1, 10),
+    dialogueStyle: pick(dialogueStyles),
+    itemName: pick(itemNames),
+    askingPrice: Math.max(40, Math.round((budget * (rand(8, 24) / 100)) / 10) * 10),
     skin: pick(customerSkinHeads),
     face: pick(customerFaces),
     hair: pick(customerHairSamples),
@@ -124,15 +148,40 @@ function Meter({ value }: { value: number }) {
 export default function CustomerGenerator() {
   const [customer, setCustomer] = useState<GeneratedCustomer>(initialCustomer);
   const [history, setHistory] = useState<GeneratedCustomer[]>([]);
+  const [recentDialogueIds, setRecentDialogueIds] = useState<string[]>(["g04"]);
+  const [dialogue, setDialogue] = useState({
+    id: "g04",
+    text: "Bak şimdi, piyasasını az çok biliyorum. Kasetçalar için ölü fiyat söyleme.",
+  });
 
   const initials = useMemo(
     () => customer.name.split(" ").map((part) => part[0]).join("").slice(0, 2),
     [customer.name],
   );
 
+  function nextDialogue(target: GeneratedCustomer, situation: DialogueSituation) {
+    const result = generateDialogue(
+      {
+        year: 2002,
+        style: target.dialogueStyle,
+        situation,
+        itemName: target.itemName,
+        askingPrice: target.askingPrice,
+        playerOffer: Math.round(target.askingPrice * 0.55 / 10) * 10,
+        relation: target.trust >= 8 ? "guvendigi" : target.trust <= 2 ? "gergin" : "yabanci",
+      },
+      recentDialogueIds,
+    );
+
+    setDialogue(result);
+    setRecentDialogueIds((current) => [result.id, ...current].slice(0, 8));
+  }
+
   function generate() {
+    const next = makeCustomer();
     setHistory((current) => [customer, ...current].slice(0, 5));
-    setCustomer(makeCustomer());
+    setCustomer(next);
+    nextDialogue(next, "giris");
   }
 
   return (
@@ -141,7 +190,7 @@ export default function CustomerGenerator() {
         <div>
           <p className={styles.kicker}>CANLI NPC TESTİ</p>
           <h2>Müşteri üretici</h2>
-          <p>Görünüş ve karakter verisi aynı anda üretiliyor. Bu yapı daha sonra dükkân, pazar ve ilan sistemine bağlanacak.</p>
+          <p>Görünüş, karakter ve konuşma tarzı birlikte üretiliyor. Replik motoru 2002 dilini koruyor ve yakın zamanda kullanılan cümleleri tekrar etmiyor.</p>
         </div>
         <button type="button" onClick={generate}>Yeni müşteri üret</button>
       </div>
@@ -168,6 +217,17 @@ export default function CustomerGenerator() {
           <div className={styles.tags}>
             <span>{customer.attitude}</span>
             <span>{customer.motive}</span>
+            <span>Konuşma: {customer.dialogueStyle}</span>
+          </div>
+
+          <div className={styles.dialogueBox}>
+            <span>2002 • {customer.itemName} • istediği {customer.askingPrice.toLocaleString("tr-TR")} ₺</span>
+            <blockquote>“{dialogue.text}”</blockquote>
+            <div className={styles.dialogueActions}>
+              <button type="button" onClick={() => nextDialogue(customer, "giris")}>Başka giriş</button>
+              <button type="button" onClick={() => nextDialogue(customer, "dusuk_teklif")}>Düşük teklif ver</button>
+              <button type="button" onClick={() => nextDialogue(customer, "kabul")}>Anlaş</button>
+            </div>
           </div>
 
           <dl className={styles.stats}>
@@ -197,7 +257,7 @@ export default function CustomerGenerator() {
             {history.map((item) => (
               <article key={item.id}>
                 <strong>{item.name}</strong>
-                <small>{item.role} · {item.budget.toLocaleString("tr-TR")} ₺</small>
+                <small>{item.role} · {item.itemName} · {item.askingPrice.toLocaleString("tr-TR")} ₺</small>
               </article>
             ))}
           </div>
