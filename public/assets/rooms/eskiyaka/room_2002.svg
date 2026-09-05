@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Eskiyaka 2002 oda sahnesi</title>
+  <desc id="desc">2002 yılında mütevazı bir genç odası; yatak, ahşap masa, çekmeceli dolap, CRT televizyon ve pencereden görünen Kavşak mahallesi.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9a37f"/>
+      <stop offset="1" stop-color="#8d795e"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#76563f"/>
+      <stop offset="1" stop-color="#4f392c"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7e9daf"/>
+      <stop offset="0.64" stop-color="#c89b79"/>
+      <stop offset="1" stop-color="#e0b887"/>
+    </linearGradient>
+    <linearGradient id="bedcover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#65725a"/>
+      <stop offset="1" stop-color="#3f4e40"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7b583f"/>
+      <stop offset="1" stop-color="#4f3629"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffd997" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#ffd997" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#1a130f" flood-opacity=".28"/>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <pattern id="wallPattern" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#5d4f3f" stroke-opacity=".065" stroke-width="2"/>
+    </pattern>
+    <pattern id="rugPattern" width="72" height="72" patternUnits="userSpaceOnUse">
+      <rect width="72" height="72" fill="#704433"/>
+      <path d="M36 6 61 36 36 66 11 36Z" fill="#b08352" opacity=".68"/>
+      <path d="M36 19 50 36 36 53 22 36Z" fill="#42372e" opacity=".9"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="720" fill="#171611"/>
+  <rect x="20" y="20" width="1160" height="680" rx="4" fill="url(#wall)"/>
+  <rect x="20" y="20" width="1160" height="462" fill="url(#wallPattern)"/>
+  <polygon points="20,482 1180,482 1180,700 20,700" fill="url(#floor)"/>
+  <path d="M20 482H1180" stroke="#4a3529" stroke-width="12"/>
+
+  <!-- Window and Kavşak skyline -->
+  <g filter="url(#shadow)">
+    <rect x="355" y="60" width="350" height="270" rx="4" fill="#514235"/>
+    <rect x="371" y="76" width="318" height="238" fill="url(#sky)"/>
+    <g fill="#6e6558">
+      <rect x="381" y="220" width="82" height="94"/>
+      <rect x="452" y="238" width="104" height="76"/>
+      <rect x="548" y="205" width="74" height="109"/>
+      <rect x="613" y="246" width="70" height="68"/>
+    </g>
+    <g fill="#cdb58f" opacity=".58">
+      <rect x="395" y="245" width="12" height="16"/><rect x="421" y="245" width="12" height="16"/>
+      <rect x="475" y="261" width="14" height="17"/><rect x="505" y="261" width="14" height="17"/>
+      <rect x="568" y="231" width="12" height="17"/><rect x="591" y="231" width="12" height="17"/>
+    </g>
+    <path d="M632 224h8V119h9l10 105h8l8 22h-51z" fill="#504b43"/>
+    <path d="M492 228c0-24 18-42 42-42s42 18 42 42" fill="#62594c"/>
+    <rect x="526" y="151" width="10" height="77" fill="#62594c"/>
+    <rect x="370" y="183" width="320" height="13" fill="#514235"/>
+    <rect x="523" y="75" width="13" height="240" fill="#514235"/>
+    <rect x="355" y="315" width="350" height="25" fill="#3c3028"/>
+  </g>
+
+  <!-- Posters -->
+  <g transform="rotate(-3 160 120)" filter="url(#shadow)">
+    <rect x="83" y="56" width="160" height="132" fill="#1f2527" stroke="#3d332b" stroke-width="7"/>
+    <circle cx="163" cy="111" r="39" fill="#b18a44"/>
+    <circle cx="163" cy="111" r="26" fill="#343832"/>
+    <text x="163" y="169" text-anchor="middle" fill="#d9c49b" font-size="18" font-family="Arial" font-weight="700">KAVŞAK FM</text>
+  </g>
+  <g transform="rotate(2 890 104)" filter="url(#shadow)">
+    <rect x="815" y="52" width="154" height="114" fill="#685241" stroke="#45352b" stroke-width="7"/>
+    <path d="M833 132 871 87l31 31 18-20 33 34z" fill="#9fa98f"/>
+    <text x="892" y="151" text-anchor="middle" fill="#eee0bd" font-size="13" font-family="Arial" font-weight="700">YOL UZUN</text>
+  </g>
+
+  <!-- Bed -->
+  <g filter="url(#shadow)">
+    <rect x="70" y="405" width="510" height="152" rx="10" fill="#443329" stroke="#2f241e" stroke-width="10"/>
+    <rect x="83" y="417" width="484" height="124" rx="7" fill="#d3c5aa"/>
+    <path d="M265 417h302v124H228c32-24 44-68 37-124Z" fill="url(#bedcover)"/>
+    <path d="M287 418v123M353 418v123M419 418v123M485 418v123" stroke="#91a080" stroke-opacity=".34" stroke-width="5"/>
+    <path d="M237 447h330M238 493h329" stroke="#26362c" stroke-opacity=".35" stroke-width="5"/>
+    <ellipse cx="154" cy="443" rx="65" ry="31" fill="#e2d7bf" transform="rotate(-7 154 443)"/>
+    <rect x="56" y="546" width="532" height="23" rx="5" fill="#2e251f"/>
+    <rect x="76" y="565" width="22" height="58" fill="#2e251f"/>
+    <rect x="544" y="565" width="22" height="58" fill="#2e251f"/>
+  </g>
+
+  <!-- Old shoes -->
+  <g opacity=".9" filter="url(#shadow)">
+    <path d="M118 620c35-5 58 8 74 25-8 14-77 19-107 2 4-11 13-20 33-27z" fill="#3b332e"/>
+    <path d="M210 622c31-4 54 7 70 22-6 14-67 20-99 5 3-13 11-21 29-27z" fill="#4a4038"/>
+  </g>
+
+  <!-- Desk -->
+  <g filter="url(#shadow)">
+    <rect x="714" y="381" width="326" height="30" rx="3" fill="url(#wood)" stroke="#3b2b22" stroke-width="6"/>
+    <rect x="731" y="410" width="28" height="170" fill="#4a3327"/>
+    <rect x="995" y="410" width="28" height="170" fill="#4a3327"/>
+    <rect x="768" y="416" width="211" height="112" rx="3" fill="#654633" stroke="#3e2b21" stroke-width="5"/>
+    <rect x="782" y="430" width="183" height="36" fill="#74513b" stroke="#4c3629" stroke-width="3"/>
+    <rect x="782" y="476" width="183" height="36" fill="#74513b" stroke="#4c3629" stroke-width="3"/>
+    <circle cx="874" cy="448" r="5" fill="#27211d"/><circle cx="874" cy="494" r="5" fill="#27211d"/>
+  </g>
+
+  <!-- CRT TV -->
+  <g filter="url(#shadow)">
+    <rect x="743" y="266" width="154" height="119" rx="13" fill="#34342f" stroke="#20211e" stroke-width="8"/>
+    <rect x="759" y="282" width="112" height="76" rx="18" fill="#6f807b" stroke="#171815" stroke-width="6"/>
+    <path d="M770 292c25-9 67-10 90 0" fill="none" stroke="#b6c4bc" stroke-opacity=".2" stroke-width="5"/>
+    <circle cx="884" cy="298" r="5" fill="#b0955d"/>
+    <circle cx="884" cy="321" r="5" fill="#77776d"/>
+    <rect x="762" y="374" width="116" height="10" rx="3" fill="#23241f"/>
+  </g>
+
+  <!-- Lamp + glow -->
+  <circle cx="1035" cy="287" r="155" fill="url(#lampGlow)" filter="url(#soft)"/>
+  <g filter="url(#shadow)">
+    <rect x="1007" y="337" width="11" height="48" fill="#302923"/>
+    <path d="M1012 340 1047 292" stroke="#302923" stroke-width="9" stroke-linecap="round"/>
+    <path d="M1031 286c12-25 42-32 62-19l-28 57c-20-7-34-19-34-38z" fill="#3c4b3d" stroke="#273128" stroke-width="5"/>
+  </g>
+
+  <!-- Drawer cabinet -->
+  <g filter="url(#shadow)">
+    <rect x="1049" y="394" width="92" height="190" rx="5" fill="url(#wood)" stroke="#3c2b22" stroke-width="7"/>
+    <rect x="1060" y="410" width="70" height="46" fill="#78553e" stroke="#4a3429" stroke-width="3"/>
+    <rect x="1060" y="464" width="70" height="46" fill="#78553e" stroke="#4a3429" stroke-width="3"/>
+    <rect x="1060" y="518" width="70" height="46" fill="#78553e" stroke="#4a3429" stroke-width="3"/>
+    <circle cx="1095" cy="433" r="5" fill="#25201b"/><circle cx="1095" cy="487" r="5" fill="#25201b"/><circle cx="1095" cy="541" r="5" fill="#25201b"/>
+  </g>
+
+  <!-- Newspaper -->
+  <g transform="rotate(-7 840 368)" filter="url(#shadow)">
+    <rect x="805" y="348" width="72" height="43" fill="#d8cfb9" stroke="#5c5144" stroke-width="2"/>
+    <text x="841" y="365" text-anchor="middle" fill="#342e28" font-size="10" font-family="Arial" font-weight="700">KAVŞAK</text>
+    <text x="841" y="378" text-anchor="middle" fill="#342e28" font-size="8" font-family="Arial">İLANLARI</text>
+    <path d="M813 383h55M813 387h42" stroke="#6b6256" stroke-width="2"/>
+  </g>
+
+  <!-- Rug -->
+  <g filter="url(#shadow)">
+    <polygon points="520,555 965,555 1090,686 398,686" fill="url(#rugPattern)" stroke="#3a2d26" stroke-width="7"/>
+    <polygon points="555,575 936,575 1025,670 455,670" fill="none" stroke="#d0a166" stroke-opacity=".72" stroke-width="7"/>
+  </g>
+
+  <!-- Small hidden cassette under bed -->
+  <g opacity=".62" transform="translate(0 2)">
+    <rect x="334" y="563" width="88" height="45" rx="5" fill="#252722" stroke="#121310" stroke-width="5"/>
+    <circle cx="355" cy="584" r="11" fill="#11120f"/><circle cx="400" cy="584" r="11" fill="#11120f"/>
+    <rect x="369" y="574" width="16" height="21" fill="#797467"/>
+  </g>
+
+  <!-- Vignette -->
+  <rect x="20" y="20" width="1160" height="680" fill="none" stroke="#120f0c" stroke-opacity=".52" stroke-width="34"/>
+</svg>
