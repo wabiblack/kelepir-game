@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CustomerGenerator from "@/components/CustomerGenerator";
 import styles from "./page.module.css";
 import {
   assetPackMeta,
@@ -47,6 +48,8 @@ export default function CustomerAssetLabPage() {
         </div>
         <Link className="asset-lab-back" href="/art-lab">Asset Lab&apos;e dön</Link>
       </header>
+
+      <CustomerGenerator />
 
       <section className={styles.hero}>
         <div className={styles.packPreview}>
