@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import FirstMarketSale from "@/components/FirstMarketSale";
 import SandboxMarket from "@/components/SandboxMarket";
+import RoomHome from "@/components/RoomHome";
 import GameButton from "@/components/ui/GameButton";
 
 type Scene = "menu" | "intro" | "room" | "market" | "sandbox";
@@ -65,7 +66,7 @@ export default function Home() {
     setFoundPlayer(false);
     setFirstItemSold(true);
     setScene("room");
-    setMessage(`İlk satışını yaptın. Cebinde artık ${amount.toLocaleString("tr-TR")} ₺ var. Tutorial bitti. Bundan sonra ne alıp satacağına sen karar veriyorsun.`);
+    setMessage(`İlk satış tamam. ${amount.toLocaleString("tr-TR")} ₺ sermayen var. Bundan sonra hangi mala gireceğine sen karar veriyorsun.`);
   };
 
   if (scene === "menu") {
@@ -78,7 +79,7 @@ export default function Home() {
           <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
           <GameButton onClick={startGame}>Yeni Oyun</GameButton>
           <Link className="asset-lab-link" href="/art-lab">Ücretsiz asset paketini aç</Link>
-          <span className="version">prototip v0.6 • sandbox ekonomi</span>
+          <span className="version">prototip v0.7 • sandbox ekonomi</span>
         </section>
       </main>
     );
@@ -159,109 +160,29 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="room-wrap">
-        <div className="room-heading">
-          <div>
-            <p className="eyebrow dark">BAŞLANGIÇ NOKTASI</p>
-            <h2>Odan</h2>
-          </div>
-          <span className="location-tag">ESKİYAKA • KAVŞAK</span>
-        </div>
-
-        <div className="room-scene" aria-label="Eskiyaka'daki oda">
-          <img className="room-art" src={roomAsset} alt="2002 yılında Eskiyaka'daki küçük oda" />
-
-          <button className="scene-hotspot bed-hotspot" onClick={inspectBed} aria-label="Yatak altına bak">
-            <span className="hotspot-dot" />
-            <span className="hotspot-label">Yatak altına bak</span>
-          </button>
-
-          <button className="scene-hotspot desk-hotspot" onClick={inspectDesk} aria-label="Masayı incele">
-            <span className="hotspot-dot" />
-            <span className="hotspot-label">Masayı incele</span>
-          </button>
-
-          <button className="scene-hotspot drawer-hotspot" onClick={inspectDrawer} aria-label="Çekmeceyi karıştır">
-            <span className="hotspot-dot" />
-            <span className="hotspot-label">Çekmeceyi karıştır</span>
-          </button>
-        </div>
-
-        <div className="story-box">
-          <span className="story-kicker">GÖZLEM</span>
-          <p>{message}</p>
-        </div>
-
-        {firstItemSold && (
-          <div className="story-box">
-            <span className="story-kicker">SERBEST OYUN</span>
-            <div>
-              <p>İlk sermayeyi çıkardın. Artık görev zinciri yok. Pazarda mal kovala, incele, pazarlık et, stok yap ve istediğin zaman sat.</p>
-              <GameButton onClick={() => setScene("sandbox")}>Bit pazarına çık</GameButton>
-            </div>
-          </div>
-        )}
-
-        {foundPlayer && (
-          <section className={`item-card ${cleanedPlayer ? "is-clean" : "is-dirty"}`}>
-            <div className="item-visual-wrap">
-              <div className="item-visual-stage">
-                <img
-                  className="item-asset"
-                  src={cleanedPlayer ? playerCleanAsset : playerDirtyAsset}
-                  alt={cleanedPlayer ? "Temizlenmiş Raksen RX-40 kasetçalar" : "Kirli Raksen RX-40 kasetçalar"}
-                />
-                <span className="asset-state">{cleanedPlayer ? "TEMİZ" : "KİRLİ"}</span>
-              </div>
-              <p className="art-note">Ürün görselleri bağımsız asset olarak tutuluyor. Durum değiştikçe aynı ürün farklı görsel katmanlarla gösterilecek.</p>
-            </div>
-
-            <div className="item-info">
-              <p className="eyebrow">İLK EŞYAN</p>
-              <h3>Raksen RX-40</h3>
-              <p className="item-subtitle">Taşınabilir stereo kasetçalar • 1990&apos;lar</p>
-
-              <dl>
-                <div><dt>Kozmetik</dt><dd>{cleanedPlayer ? "Orta / İyi" : "Kötü"}</dd></div>
-                <div><dt>Kir</dt><dd>{cleanedPlayer ? "Düşük" : "Çok yüksek"}</dd></div>
-                <div><dt>Çalışma</dt><dd>Bilinmiyor</dd></div>
-                <div><dt>Satış izni</dt><dd>{familyPermission ? "Var" : "Yok"}</dd></div>
-                <div><dt>Piyasa</dt><dd>?</dd></div>
-              </dl>
-
-              {!cleanedPlayer ? (
-                <GameButton
-                  variant="secondary"
-                  onClick={() => {
-                    setCleanedPlayer(true);
-                    setMessage("Bezi ıslatıp kasayı dikkatlice sildin. Toz gidince cihazın gövdesi düşündüğünden daha iyi durumda çıktı.");
-                  }}
-                >
-                  Temizle
-                </GameButton>
-              ) : !familyPermission ? (
-                <GameButton variant="secondary" onClick={askFamily}>Evdekilere satabilir miyim diye sor</GameButton>
-              ) : (
-                <>
-                  <GameButton
-                    variant="primary"
-                    onClick={() => {
-                      setScene("market");
-                      setMessage("Raksen'i koltuğunun altına alıp Cumartesi Pazarı'nın yolunu tuttun.");
-                    }}
-                  >
-                    Cumartesi Pazarı&apos;na götür
-                  </GameButton>
-                  <div className="next-hint">
-                    <strong>Risk</strong>
-                    <span>Cihazı pil ile test etmedin. Alıcı bunu pazarlıkta kullanabilir.</span>
-                  </div>
-                </>
-              )}
-            </div>
-          </section>
-        )}
-      </section>
+      <RoomHome
+        roomAsset={roomAsset}
+        playerDirtyAsset={playerDirtyAsset}
+        playerCleanAsset={playerCleanAsset}
+        message={message}
+        foundPlayer={foundPlayer}
+        cleanedPlayer={cleanedPlayer}
+        familyPermission={familyPermission}
+        firstItemSold={firstItemSold}
+        onInspectBed={inspectBed}
+        onInspectDesk={inspectDesk}
+        onInspectDrawer={inspectDrawer}
+        onClean={() => {
+          setCleanedPlayer(true);
+          setMessage("Bezi ıslatıp kasayı dikkatlice sildin. Toz gidince cihazın gövdesi düşündüğünden daha iyi durumda çıktı.");
+        }}
+        onAskFamily={askFamily}
+        onGoMarket={() => {
+          setScene("market");
+          setMessage("Raksen'i koltuğunun altına alıp Cumartesi Pazarı'nın yolunu tuttun.");
+        }}
+        onGoSandbox={() => setScene("sandbox")}
+      />
     </main>
   );
 }
