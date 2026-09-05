@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import FirstMarketSale from "@/components/FirstMarketSale";
+import SandboxMarket from "@/components/SandboxMarket";
 import GameButton from "@/components/ui/GameButton";
 
-type Scene = "menu" | "intro" | "room" | "market";
+type Scene = "menu" | "intro" | "room" | "market" | "sandbox";
 
 const roomAsset = "/assets/rooms/eskiyaka/room_2002.svg";
 const playerDirtyAsset = "/assets/items/cassette/raksen-rx40/dirty.svg";
@@ -21,6 +22,13 @@ export default function Home() {
   const [message, setMessage] = useState("Odan sessiz. Cebinde tek kuruş yok.");
 
   const startGame = () => {
+    setMoney(0);
+    setFoundPlayer(false);
+    setCleanedPlayer(false);
+    setFamilyPermission(false);
+    setFirstItemSold(false);
+    setMessage("Odan sessiz. Cebinde tek kuruş yok.");
+    window.localStorage.removeItem("kelepir-economy-v1");
     setScene("intro");
     window.setTimeout(() => setScene("room"), 1700);
   };
@@ -57,7 +65,7 @@ export default function Home() {
     setFoundPlayer(false);
     setFirstItemSold(true);
     setScene("room");
-    setMessage(`İlk satışını yaptın. Cebinde artık ${amount.toLocaleString("tr-TR")} ₺ var. Küçük görünüyor ama sıfırdan ilk sermayen bu.`);
+    setMessage(`İlk satışını yaptın. Cebinde artık ${amount.toLocaleString("tr-TR")} ₺ var. Tutorial bitti. Bundan sonra ne alıp satacağına sen karar veriyorsun.`);
   };
 
   if (scene === "menu") {
@@ -70,7 +78,7 @@ export default function Home() {
           <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
           <GameButton onClick={startGame}>Yeni Oyun</GameButton>
           <Link className="asset-lab-link" href="/art-lab">Ücretsiz asset paketini aç</Link>
-          <span className="version">prototip v0.5 • Kenney UI</span>
+          <span className="version">prototip v0.6 • sandbox ekonomi</span>
         </section>
       </main>
     );
@@ -112,6 +120,32 @@ export default function Home() {
     );
   }
 
+  if (scene === "sandbox") {
+    return (
+      <main className="game-screen">
+        <header className="hud">
+          <div>
+            <strong>03 Mart 2002</strong>
+            <span>Pazar • 13:18 • Eskiyaka Bit Pazarı</span>
+          </div>
+          <div className="hud-right">
+            <span className="status-chip">Serbest tüccar</span>
+            <div className="money">{money.toLocaleString("tr-TR")} ₺</div>
+          </div>
+        </header>
+
+        <SandboxMarket
+          money={money}
+          onMoneyChange={setMoney}
+          onLeave={() => {
+            setScene("room");
+            setMessage("Pazardan eve döndün. Aldığın mallar ve kasa hareketlerin kayıtlı kaldı.");
+          }}
+        />
+      </main>
+    );
+  }
+
   return (
     <main className="game-screen">
       <header className="hud">
@@ -120,7 +154,7 @@ export default function Home() {
           <span>Pazar • 09:12 • Eskiyaka</span>
         </div>
         <div className="hud-right">
-          <span className="status-chip">İşsiz</span>
+          <span className="status-chip">{firstItemSold ? "Acemi tüccar" : "İşsiz"}</span>
           <div className="money">{money.toLocaleString("tr-TR")} ₺</div>
         </div>
       </header>
@@ -157,6 +191,16 @@ export default function Home() {
           <span className="story-kicker">GÖZLEM</span>
           <p>{message}</p>
         </div>
+
+        {firstItemSold && (
+          <div className="story-box">
+            <span className="story-kicker">SERBEST OYUN</span>
+            <div>
+              <p>İlk sermayeyi çıkardın. Artık görev zinciri yok. Pazarda mal kovala, incele, pazarlık et, stok yap ve istediğin zaman sat.</p>
+              <GameButton onClick={() => setScene("sandbox")}>Bit pazarına çık</GameButton>
+            </div>
+          </div>
+        )}
 
         {foundPlayer && (
           <section className={`item-card ${cleanedPlayer ? "is-clean" : "is-dirty"}`}>
