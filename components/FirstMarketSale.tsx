@@ -8,6 +8,7 @@ import {
   customerSkinHeads,
 } from "@/data/assetPacks";
 import { generateBuyerDialogue } from "@/lib/buyerDialogue";
+import GameButton from "@/components/ui/GameButton";
 import styles from "./FirstMarketSale.module.css";
 
 type Phase = "intro" | "bargain" | "sold" | "left";
@@ -153,8 +154,8 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
 
       {phase === "intro" && (
         <div className={styles.actions}>
-          <button className={styles.primary} type="button" onClick={inspect}>İncelemesine izin ver</button>
-          <button type="button" onClick={walkAway}>Şimdilik satma</button>
+          <GameButton type="button" onClick={inspect}>İncelemesine izin ver</GameButton>
+          <GameButton variant="quiet" type="button" onClick={walkAway}>Şimdilik satma</GameButton>
         </div>
       )}
 
@@ -167,10 +168,10 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.primary} type="button" onClick={() => accept()}>{offer} ₺ kabul et</button>
-            <button type="button" onClick={() => counter(offer + 20)}>{offer + 20} ₺ iste</button>
-            <button type="button" onClick={() => counter(offer + 50)}>{offer + 50} ₺ iste</button>
-            <button className={styles.quiet} type="button" onClick={walkAway}>Satmaktan vazgeç</button>
+            <GameButton type="button" onClick={() => accept()}>{offer} ₺ kabul et</GameButton>
+            <GameButton variant="secondary" type="button" onClick={() => counter(offer + 20)}>{offer + 20} ₺ iste</GameButton>
+            <GameButton variant="secondary" type="button" onClick={() => counter(offer + 50)}>{offer + 50} ₺ iste</GameButton>
+            <GameButton variant="quiet" type="button" onClick={walkAway}>Satmaktan vazgeç</GameButton>
           </div>
         </div>
       )}
@@ -180,7 +181,7 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
           <span>İLK SATIŞ</span>
           <strong>+{salePrice} ₺</strong>
           <p>Sıfırdan ilk sermayeni çıkardın. Kasetçalar artık Serkan&apos;ın, para cebinde.</p>
-          <button className={styles.primary} type="button" onClick={() => onSold(salePrice)}>Parayı al ve eve dön</button>
+          <GameButton type="button" onClick={() => onSold(salePrice)}>Parayı al ve eve dön</GameButton>
         </div>
       )}
 
@@ -189,7 +190,7 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
           <span>PAZARLIK BİTTİ</span>
           <strong>Satış yok</strong>
           <p>Ürün sende kaldı. Başka müşteri bekleyebilir veya sonra tekrar pazara gelebilirsin.</p>
-          <button className={styles.primary} type="button" onClick={onLeave}>Eve dön</button>
+          <GameButton type="button" onClick={onLeave}>Eve dön</GameButton>
         </div>
       )}
     </section>
