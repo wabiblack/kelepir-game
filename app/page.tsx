@@ -4,6 +4,10 @@ import { useState } from "react";
 
 type Scene = "menu" | "intro" | "room";
 
+const roomAsset = "/assets/rooms/eskiyaka/room_2002.svg";
+const playerDirtyAsset = "/assets/items/cassette/raksen-rx40/dirty.svg";
+const playerCleanAsset = "/assets/items/cassette/raksen-rx40/clean.svg";
+
 export default function Home() {
   const [scene, setScene] = useState<Scene>("menu");
   const [foundPlayer, setFoundPlayer] = useState(false);
@@ -18,18 +22,18 @@ export default function Home() {
   const inspectBed = () => {
     if (!foundPlayer) {
       setFoundPlayer(true);
-      setMessage("Yatağın altında toz içinde eski bir kasetçalar buldun. Marka: Raksen RX-40. Çalışıyor mu bilmiyorsun.");
+      setMessage("Yatağın altında toz içinde eski bir kasetçalar buldun. Raksen RX-40. Çalışıyor mu henüz bilmiyorsun.");
       return;
     }
-    setMessage("Yatağın altında başka bir şey yok.");
+    setMessage("Yatağın altını tekrar kontrol ettin. Başka para edecek bir şey görünmüyor.");
   };
 
   const inspectDrawer = () => {
-    setMessage("Çekmecede iki kalem, eski bir otobüs bileti ve boş pil ambalajı var. Şimdilik para edecek bir şey yok.");
+    setMessage("Çekmecede iki kalem, eski bir otobüs bileti ve boş pil ambalajı var. Pil ambalajı aklına bir fikir getiriyor: kasetçaları test etmek için pil bulman gerekecek.");
   };
 
   const inspectDesk = () => {
-    setMessage("Masada eski gazete ilanları duruyor. İnsanlar eşyalarını hâlâ telefon numarası yazarak satıyor.");
+    setMessage("Masada Kavşak İlanları gazetesi duruyor. İkinci el eşyalar telefon numarası yazılarak satılıyor. İnternet henüz herkesin cebinde değil.");
   };
 
   if (scene === "menu") {
@@ -39,9 +43,9 @@ export default function Home() {
         <section className="menu-card">
           <p className="eyebrow">KAVŞAK • 2002</p>
           <h1>KELEPİR</h1>
-          <p className="tagline">Sıfır paran var. Gerisini sen çevireceksin.</p>
+          <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
           <button className="primary-button" onClick={startGame}>Yeni Oyun</button>
-          <span className="version">prototip v0.1</span>
+          <span className="version">prototip v0.2 • asset sistemi</span>
         </section>
       </main>
     );
@@ -50,7 +54,7 @@ export default function Home() {
   if (scene === "intro") {
     return (
       <main className="intro-screen">
-        <p>2002</p>
+        <p>03 MART 2002</p>
         <h2>KAVŞAK</h2>
         <span>Eskiyaka Mahallesi</span>
       </main>
@@ -62,77 +66,88 @@ export default function Home() {
       <header className="hud">
         <div>
           <strong>03 Mart 2002</strong>
-          <span>Pazar • 09:12</span>
+          <span>Pazar • 09:12 • Eskiyaka</span>
         </div>
-        <div className="money">0 ₺</div>
+        <div className="hud-right">
+          <span className="status-chip">İşsiz</span>
+          <div className="money">0 ₺</div>
+        </div>
       </header>
 
       <section className="room-wrap">
-        <div className="room-title">
-          <p>ESKİYAKA</p>
-          <h2>Odan</h2>
+        <div className="room-heading">
+          <div>
+            <p className="eyebrow dark">BAŞLANGIÇ NOKTASI</p>
+            <h2>Odan</h2>
+          </div>
+          <span className="location-tag">ESKİYAKA • KAVŞAK</span>
         </div>
 
         <div className="room-scene" aria-label="Eskiyaka'daki oda">
-          <div className="window"><div className="window-cross" /></div>
-          <div className="poster">KAVŞAK<br /><small>FM 91.2</small></div>
+          <img className="room-art" src={roomAsset} alt="2002 yılında Eskiyaka'daki küçük oda" />
 
-          <button className="hotspot bed" onClick={inspectBed} aria-label="Yatak altına bak">
-            <div className="bed-pillow" />
-            <div className="bed-blanket" />
-            <span>Yatak altına bak</span>
+          <button className="scene-hotspot bed-hotspot" onClick={inspectBed} aria-label="Yatak altına bak">
+            <span className="hotspot-dot" />
+            <span className="hotspot-label">Yatak altına bak</span>
           </button>
 
-          <button className="hotspot drawer" onClick={inspectDrawer} aria-label="Çekmeceyi karıştır">
-            <i /><i /><i />
-            <span>Çekmeceyi karıştır</span>
+          <button className="scene-hotspot desk-hotspot" onClick={inspectDesk} aria-label="Masayı incele">
+            <span className="hotspot-dot" />
+            <span className="hotspot-label">Masayı incele</span>
           </button>
 
-          <button className="hotspot desk" onClick={inspectDesk} aria-label="Masaya bak">
-            <div className="newspaper">İLAN</div>
-            <span>Masaya bak</span>
+          <button className="scene-hotspot drawer-hotspot" onClick={inspectDrawer} aria-label="Çekmeceyi karıştır">
+            <span className="hotspot-dot" />
+            <span className="hotspot-label">Çekmeceyi karıştır</span>
           </button>
-
-          <div className="floor-line" />
         </div>
 
         <div className="story-box">
+          <span className="story-kicker">GÖZLEM</span>
           <p>{message}</p>
         </div>
 
         {foundPlayer && (
-          <section className={`item-card ${cleanedPlayer ? "clean" : "dirty"}`}>
-            <div className="cassette-player" aria-label="Raksen RX-40 kasetçalar çizimi">
-              <div className="speaker speaker-left" />
-              <div className="speaker speaker-right" />
-              <div className="cassette-window">
-                <i /><i />
+          <section className={`item-card ${cleanedPlayer ? "is-clean" : "is-dirty"}`}>
+            <div className="item-visual-wrap">
+              <div className="item-visual-stage">
+                <img
+                  className="item-asset"
+                  src={cleanedPlayer ? playerCleanAsset : playerDirtyAsset}
+                  alt={cleanedPlayer ? "Temizlenmiş Raksen RX-40 kasetçalar" : "Kirli Raksen RX-40 kasetçalar"}
+                />
+                <span className="asset-state">{cleanedPlayer ? "TEMİZ" : "KİRLİ"}</span>
               </div>
-              <div className="buttons"><i /><i /><i /><i /></div>
-              {!cleanedPlayer && <div className="dust dust-one" />}
-              {!cleanedPlayer && <div className="dust dust-two" />}
-              {!cleanedPlayer && <div className="dust dust-three" />}
+              <p className="art-note">Artık ürün çizimi CSS şekilleri değil, bağımsız SVG asset.</p>
             </div>
 
             <div className="item-info">
               <p className="eyebrow">İLK EŞYAN</p>
               <h3>Raksen RX-40</h3>
+              <p className="item-subtitle">Taşınabilir stereo kasetçalar • 1990&apos;lar</p>
+
               <dl>
-                <div><dt>Tür</dt><dd>Kasetçalar</dd></div>
-                <div><dt>Durum</dt><dd>{cleanedPlayer ? "Temiz" : "Çok kirli"}</dd></div>
+                <div><dt>Kozmetik</dt><dd>{cleanedPlayer ? "Orta / İyi" : "Kötü"}</dd></div>
+                <div><dt>Kir</dt><dd>{cleanedPlayer ? "Düşük" : "Çok yüksek"}</dd></div>
                 <div><dt>Çalışma</dt><dd>Bilinmiyor</dd></div>
-                <div><dt>Değer</dt><dd>?</dd></div>
+                <div><dt>Piyasa</dt><dd>?</dd></div>
               </dl>
-              {!cleanedPlayer && (
+
+              {!cleanedPlayer ? (
                 <button
                   className="secondary-button"
                   onClick={() => {
                     setCleanedPlayer(true);
-                    setMessage("Kasetçaların üzerindeki yıllanmış tozu temizledin. Şimdi en azından neye benzediği belli.");
+                    setMessage("Bezi ıslatıp kasayı dikkatlice sildin. Toz gidince cihazın gövdesi düşündüğünden daha iyi durumda çıktı.");
                   }}
                 >
                   Temizle
                 </button>
+              ) : (
+                <div className="next-hint">
+                  <strong>Sıradaki ihtiyaç</strong>
+                  <span>Kasetçaları çalıştırmak için pil bul.</span>
+                </div>
               )}
             </div>
           </section>
