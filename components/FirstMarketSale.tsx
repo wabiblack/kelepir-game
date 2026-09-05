@@ -1,21 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import {
-  customerFaces,
-  customerHairSamples,
-  customerShirtSamples,
-  customerSkinHeads,
-} from "@/data/assetPacks";
-import { worldAssets } from "@/data/worldAssets";
 import { generateBuyerDialogue } from "@/lib/buyerDialogue";
-import GameButton from "@/components/ui/GameButton";
 import styles from "./FirstMarketSale.module.css";
 
 type Phase = "intro" | "bargain" | "sold" | "left";
 
 type Props = {
   itemAsset: string;
+  money: number;
   onSold: (amount: number) => void;
   onLeave: () => void;
 };
@@ -24,22 +17,20 @@ const buyer = {
   name: "Serkan Yıldız",
   age: 29,
   description: "Eski elektronik meraklısı",
-  skin: customerSkinHeads[2],
-  face: customerFaces[0],
-  hair: customerHairSamples[2],
-  shirt: customerShirtSamples[1],
 };
 
 const ITEM_NAME = "Raksen RX-40 kasetçalar";
 const MAX_PRICE = 130;
+const PIXEL_PORTRAIT = "https://opengameart.org/sites/default/files/portrait.png";
 
-export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
+export default function FirstMarketSale({ itemAsset, money, onSold, onLeave }: Props) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [offer, setOffer] = useState(80);
   const [patience, setPatience] = useState(3);
   const [salePrice, setSalePrice] = useState<number | null>(null);
   const [recentIds, setRecentIds] = useState<string[]>(["bg03"]);
   const [dialogue, setDialogue] = useState("Şu kasetçalar dikkatimi çekti. Çalışıyor mu bunun?");
+  const [portraitVisible, setPortraitVisible] = useState(true);
 
   function say(situation: Parameters<typeof generateBuyerDialogue>[0]["situation"], counter?: number, nextOffer = offer) {
     const result = generateBuyerDialogue(
@@ -111,96 +102,106 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
 
   return (
     <section className={styles.screen}>
-      <div className={styles.marketTop}>
-        <div>
-          <span>CUMARTESİ PAZARI • 03 MART 2002</span>
-          <strong>İlk Pazarlık</strong>
-        </div>
-        <small>ESKİYAKA</small>
-      </div>
+      <div className={styles.pixelWindow}>
+        <header className={styles.windowBar}>
+          <div>
+            <span>03 MART 2002 • 11:06</span>
+            <strong>CUMARTESİ PAZARI</strong>
+          </div>
+          <div className={styles.windowTools}>
+            <div className={styles.wallet}>{money.toLocaleString("tr-TR")} ₺</div>
+            {phase !== "sold" && phase !== "left" && (
+              <button className={styles.closeButton} type="button" onClick={walkAway} aria-label="Pazarlıktan çık">
+                ×
+              </button>
+            )}
+          </div>
+        </header>
 
-      <div className={styles.sceneFrame}>
-        <div className={styles.scene}>
-          <img className={styles.backWall} src={worldAssets.architecture.wallA} alt="" aria-hidden="true" />
-          <img className={styles.backWallTwo} src={worldAssets.architecture.wallB} alt="" aria-hidden="true" />
-          <img className={styles.ground} src={worldAssets.roads.asphaltDamaged} alt="" aria-hidden="true" />
-          <img className={styles.awning} src={worldAssets.props.awningWide} alt="Pazar tentesi" />
-          <img className={styles.pallet} src={worldAssets.props.pallet} alt="Ahşap palet" />
-          <img className={styles.boxOpen} src={worldAssets.interior.boxOpen} alt="Açık karton kutu" />
-          <img className={styles.boxClosed} src={worldAssets.interior.boxClosed} alt="Karton kutu" />
-          <img className={styles.truck} src={worldAssets.props.truckGrey} alt="Pazarda park etmiş eski kamyon" />
-          <img className={styles.stallTable} src={worldAssets.interior.desk} alt="İkinci el tezgâhı" />
-
-          <div className={styles.itemSpot}>
-            <img src={itemAsset} alt="Tezgâhtaki Raksen RX-40 kasetçalar" />
-            <span>TEST EDİLMEDİ</span>
+        <div className={styles.portraitPanel}>
+          <div className={styles.namePlate}>
+            <span>{buyer.description}</span>
+            <strong>{buyer.name}</strong>
+            <small>{buyer.age} yaş</small>
           </div>
 
-          <div className={styles.buyerSpot}>
-            <div className={styles.portrait} aria-hidden="true">
-              <img className={styles.shirt} src={buyer.shirt.src} alt="" />
-              <img className={styles.head} src={buyer.skin.src} alt="" />
-              <img className={styles.face} src={buyer.face.src} alt="" />
-              <img className={styles.hair} src={buyer.hair.src} alt="" />
+          <div className={styles.portraitStage}>
+            <div className={styles.pixelGrid} aria-hidden="true" />
+            {portraitVisible && (
+              <img
+                className={styles.portraitArt}
+                src={PIXEL_PORTRAIT}
+                alt=""
+                aria-hidden="true"
+                onError={() => setPortraitVisible(false)}
+              />
+            )}
+
+            <div className={styles.itemCard}>
+              <span>TEZGAHTAKİ ÜRÜN</span>
+              <img src={itemAsset} alt="Raksen RX-40 kasetçalar" />
+              <strong>RAKSEN RX-40</strong>
+              <small>TEST EDİLMEDİ</small>
+            </div>
+          </div>
+
+          <div className={styles.quickRow}>
+            <div>
+              <span>ALICI</span>
+              <strong>Temkinli</strong>
             </div>
             <div>
-              <span>{buyer.description}</span>
-              <strong>{buyer.name}</strong>
-              <small>{buyer.age} yaş • temkinli alıcı</small>
+              <span>{phase === "bargain" ? "TEKLİF" : "DURUM"}</span>
+              <strong>{phase === "bargain" ? `${offer} ₺` : "İlk temas"}</strong>
             </div>
           </div>
-
-          <div className={styles.marketTag}>
-            <span>İKİNCİ EL</span>
-            <strong>Raksen RX-40</strong>
-          </div>
         </div>
+
+        <div className={styles.dialogueBox}>
+          <span className={styles.speaker}>{buyer.name.toUpperCase()}</span>
+          <p>{dialogue}</p>
+          {phase === "bargain" && (
+            <div className={styles.patience} aria-label={`Alıcının sabrı ${patience}/3`}>
+              <span>SABIR</span>
+              <strong>{"■".repeat(patience)}{"□".repeat(3 - patience)}</strong>
+            </div>
+          )}
+        </div>
+
+        {phase === "intro" && (
+          <div className={styles.choices}>
+            <button type="button" onClick={inspect}>İncelemesine izin ver</button>
+            <button type="button" onClick={inspect}>Test etmedim, fiyatını söyle</button>
+            <button type="button" onClick={walkAway}>Şimdilik satma</button>
+          </div>
+        )}
+
+        {phase === "bargain" && (
+          <div className={styles.choices}>
+            <button type="button" onClick={() => accept()}>{offer} ₺ teklifi kabul et</button>
+            <button type="button" onClick={() => counter(offer + 20)}>{offer + 20} ₺ iste</button>
+            <button type="button" onClick={() => counter(offer + 50)}>{offer + 50} ₺ iste</button>
+          </div>
+        )}
+
+        {phase === "sold" && salePrice !== null && (
+          <div className={styles.resultBox}>
+            <span>İLK SATIŞ TAMAM</span>
+            <strong>+{salePrice} ₺</strong>
+            <p>Kasetçalar Serkan&apos;ın. İlk sermaye cebinde.</p>
+            <button type="button" onClick={() => onSold(salePrice)}>Parayı al ve eve dön</button>
+          </div>
+        )}
+
+        {phase === "left" && (
+          <div className={styles.resultBox}>
+            <span>PAZARLIK BİTTİ</span>
+            <strong>Satış yok</strong>
+            <p>Ürün sende kaldı. Daha sonra tekrar deneyebilirsin.</p>
+            <button type="button" onClick={onLeave}>Eve dön</button>
+          </div>
+        )}
       </div>
-
-      <div className={styles.dialogue}>
-        <span>{buyer.name.toUpperCase()}</span>
-        <p>“{dialogue}”</p>
-      </div>
-
-      {phase === "intro" && (
-        <div className={styles.actions}>
-          <GameButton type="button" onClick={inspect}>İncelemesine izin ver</GameButton>
-          <GameButton variant="quiet" type="button" onClick={walkAway}>Şimdilik satma</GameButton>
-        </div>
-      )}
-
-      {phase === "bargain" && (
-        <div className={styles.tradePanel}>
-          <div className={styles.offerBox}>
-            <span>TEKLİF</span>
-            <strong>{offer} ₺</strong>
-            <small>Sabır {"●".repeat(patience)}{"○".repeat(3 - patience)}</small>
-          </div>
-
-          <div className={styles.actions}>
-            <GameButton type="button" onClick={() => accept()}>{offer} ₺ kabul et</GameButton>
-            <GameButton variant="secondary" type="button" onClick={() => counter(offer + 20)}>{offer + 20} ₺ iste</GameButton>
-            <GameButton variant="secondary" type="button" onClick={() => counter(offer + 50)}>{offer + 50} ₺ iste</GameButton>
-            <GameButton variant="quiet" type="button" onClick={walkAway}>Vazgeç</GameButton>
-          </div>
-        </div>
-      )}
-
-      {phase === "sold" && salePrice !== null && (
-        <div className={styles.result}>
-          <div><span>İLK SATIŞ</span><strong>+{salePrice} ₺</strong></div>
-          <p>Kasetçalar Serkan&apos;ın, ilk sermaye cebinde.</p>
-          <GameButton type="button" onClick={() => onSold(salePrice)}>Parayı al ve eve dön</GameButton>
-        </div>
-      )}
-
-      {phase === "left" && (
-        <div className={styles.result}>
-          <div><span>PAZARLIK BİTTİ</span><strong>Satış yok</strong></div>
-          <p>Ürün sende kaldı. Başka müşteri bekleyebilirsin.</p>
-          <GameButton type="button" onClick={onLeave}>Eve dön</GameButton>
-        </div>
-      )}
     </section>
   );
 }
