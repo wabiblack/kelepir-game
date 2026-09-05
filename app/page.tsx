@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import FirstMarketSale from "@/components/FirstMarketSale";
 
-type Scene = "menu" | "intro" | "room";
+type Scene = "menu" | "intro" | "room" | "market";
 
 const roomAsset = "/assets/rooms/eskiyaka/room_2002.svg";
 const playerDirtyAsset = "/assets/items/cassette/raksen-rx40/dirty.svg";
@@ -11,8 +12,10 @@ const playerCleanAsset = "/assets/items/cassette/raksen-rx40/clean.svg";
 
 export default function Home() {
   const [scene, setScene] = useState<Scene>("menu");
+  const [money, setMoney] = useState(0);
   const [foundPlayer, setFoundPlayer] = useState(false);
   const [cleanedPlayer, setCleanedPlayer] = useState(false);
+  const [familyPermission, setFamilyPermission] = useState(false);
   const [message, setMessage] = useState("Odan sessiz. Cebinde tek kuruş yok.");
 
   const startGame = () => {
@@ -37,6 +40,18 @@ export default function Home() {
     setMessage("Masada Kavşak İlanları gazetesi duruyor. İkinci el eşyalar telefon numarası yazılarak satılıyor. İnternet henüz herkesin cebinde değil.");
   };
 
+  const askFamily = () => {
+    setFamilyPermission(true);
+    setMessage("Evdekilere sordun. 'Yıllardır kullanılmıyor, işine yarayacaksa sat' dediler. Kasetçalar artık satış için sende.");
+  };
+
+  const completeFirstSale = (amount: number) => {
+    setMoney((current) => current + amount);
+    setFoundPlayer(false);
+    setScene("room");
+    setMessage(`İlk satışını yaptın. Cebinde artık ${amount.toLocaleString("tr-TR")} ₺ var. Küçük görünüyor ama sıfırdan ilk sermayen bu.`);
+  };
+
   if (scene === "menu") {
     return (
       <main className="menu-screen">
@@ -47,7 +62,7 @@ export default function Home() {
           <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
           <button className="primary-button" onClick={startGame}>Yeni Oyun</button>
           <Link className="asset-lab-link" href="/art-lab">Ücretsiz asset paketini aç</Link>
-          <span className="version">prototip v0.3 • CC0 asset lab</span>
+          <span className="version">prototip v0.4 • ilk pazarlık</span>
         </section>
       </main>
     );
@@ -63,6 +78,32 @@ export default function Home() {
     );
   }
 
+  if (scene === "market") {
+    return (
+      <main className="game-screen">
+        <header className="hud">
+          <div>
+            <strong>03 Mart 2002</strong>
+            <span>Pazar • 11:06 • Cumartesi Pazarı</span>
+          </div>
+          <div className="hud-right">
+            <span className="status-chip">İlk satış peşinde</span>
+            <div className="money">{money.toLocaleString("tr-TR")} ₺</div>
+          </div>
+        </header>
+
+        <FirstMarketSale
+          itemAsset={playerCleanAsset}
+          onSold={completeFirstSale}
+          onLeave={() => {
+            setScene("room");
+            setMessage("Pazardan satış yapmadan döndün. Raksen hâlâ sende. İstersen başka bir gün yeniden deneyebilirsin.");
+          }}
+        />
+      </main>
+    );
+  }
+
   return (
     <main className="game-screen">
       <header className="hud">
@@ -72,7 +113,7 @@ export default function Home() {
         </div>
         <div className="hud-right">
           <span className="status-chip">İşsiz</span>
-          <div className="money">0 ₺</div>
+          <div className="money">{money.toLocaleString("tr-TR")} ₺</div>
         </div>
       </header>
 
@@ -120,7 +161,7 @@ export default function Home() {
                 />
                 <span className="asset-state">{cleanedPlayer ? "TEMİZ" : "KİRLİ"}</span>
               </div>
-              <p className="art-note">Ürün görselleri bağımsız asset olarak tutuluyor. Hazır CC0 paketler küçük eşya ve envanter tarafında kullanılacak.</p>
+              <p className="art-note">Ürün görselleri bağımsız asset olarak tutuluyor. Durum değiştikçe aynı ürün farklı görsel katmanlarla gösterilecek.</p>
             </div>
 
             <div className="item-info">
@@ -132,6 +173,7 @@ export default function Home() {
                 <div><dt>Kozmetik</dt><dd>{cleanedPlayer ? "Orta / İyi" : "Kötü"}</dd></div>
                 <div><dt>Kir</dt><dd>{cleanedPlayer ? "Düşük" : "Çok yüksek"}</dd></div>
                 <div><dt>Çalışma</dt><dd>Bilinmiyor</dd></div>
+                <div><dt>Satış izni</dt><dd>{familyPermission ? "Var" : "Yok"}</dd></div>
                 <div><dt>Piyasa</dt><dd>?</dd></div>
               </dl>
 
@@ -145,11 +187,24 @@ export default function Home() {
                 >
                   Temizle
                 </button>
+              ) : !familyPermission ? (
+                <button className="secondary-button" onClick={askFamily}>Evdekilere satabilir miyim diye sor</button>
               ) : (
-                <div className="next-hint">
-                  <strong>Sıradaki ihtiyaç</strong>
-                  <span>Kasetçaları çalıştırmak için pil bul.</span>
-                </div>
+                <>
+                  <button
+                    className="secondary-button"
+                    onClick={() => {
+                      setScene("market");
+                      setMessage("Raksen'i koltuğunun altına alıp Cumartesi Pazarı'nın yolunu tuttun.");
+                    }}
+                  >
+                    Cumartesi Pazarı&apos;na götür
+                  </button>
+                  <div className="next-hint">
+                    <strong>Risk</strong>
+                    <span>Cihazı pil ile test etmedin. Alıcı bunu pazarlıkta kullanabilir.</span>
+                  </div>
+                </>
               )}
             </div>
           </section>
