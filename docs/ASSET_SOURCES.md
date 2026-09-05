@@ -1,109 +1,130 @@
 # KELEPİR Asset Kaynakları
 
-Bu dosya projeye giren üçüncü taraf asset paketlerinin kaynağını, lisansını ve KELEPİR içindeki kullanım alanını takip eder.
+Bu dosya projede kullanılan üçüncü taraf görsel paketlerin kaynağını, lisansını ve KELEPİR içindeki rolünü takip eder.
 
-## Global görsel üretim kuralı
+## Güncel resmi sanat yönü
 
-KELEPİR'de ekranda görünen hiçbir yeni görsel varsayılan olarak sıfırdan çizilmez. Bu kural yalnızca satılan ürünler için değil, **ana menü, giriş sahnesi, şehir, sokak, oda, dükkân, pazar, depo, atölye, bina, araç, NPC, mobilya, aksesuar, tabela, duvar dekoru, küçük prop, UI ve ikonlar** için de geçerlidir.
+KELEPİR'in aktif görsel dili **karşıdan görünen 2D detaylı pixel art** olarak sabitlenmiştir.
 
-Öncelik sırası:
+Zorunlu kurallar:
 
-1. Lisansı doğrulanmış ve ana sanat diliyle uyumlu hazır 2D asset.
-2. Aynı aileden hazır 3D modelin sabit kamera, ışık ve render şablonuyla 2D oyun görseline çevrilmesi.
-3. Aynı pakette bulunmuyorsa stil, perspektif, gölge ve detay seviyesi uyumlu ikinci bir lisansı temiz paket.
-4. Uygun asset bulunamazsa arama alanı genişletilir. Sıfırdan çizime dönülmez.
+1. İzometrik görünüm kullanılmaz.
+2. Top-down / 3-çeyrek kamera ana oyun sahnelerinde kullanılmaz.
+3. Mekân oyuncunun karşısındadır; oda, tezgâh, dükkân ve ürünler önden veya doğal side-view perspektifte okunur.
+4. Ücretsiz ve lisansı açıkça doğrulanmış hazır assetler kullanılır.
+5. Sıfırdan yeni görsel çizilmez. Uygun hazır asset bulunana kadar arama genişletilir.
+6. Aynı ekranda farklı perspektif, kontur ve detay seviyesine sahip paketler rastgele karıştırılmaz.
+7. Pixel assetler tarayıcıda `image-rendering: pixelated` / `crisp-edges` mantığıyla gösterilir; blur ve yumuşak upscale kullanılmaz.
+8. 2002 başlangıç dönemine uymayan telefon, araç, bilgisayar, tabela ve ürünler erken oyunda görünmez.
 
-Bir asset oyuna alınmadan önce kaynak, lisans, dönem uyumu ve görsel eşleşme doğrulanır. Sadece dosya adına bakıp bir ürün veya mekân adı uydurulmaz.
+## Aktif iç mekân ailesi — Brysia Pixel Cartoon Rooms
 
-## Ana dünya ailesi — Kenney Retro Urban Kit
+- Kaynak: https://brysiaa.itch.io/pixel-cartoon-rooms
+- Yazar: Brysia
+- Fiyat: ücretsiz / name-your-own-price
+- Stil: 16x16 tabanlı, renkli 2D pixel art, rooms / side-scroller
+- Lisans notu: kişisel ve ticari projelerde kullanım ve düzenleme serbest; asset dosyaları yeniden satılamaz veya bağımsız olarak dağıtılamaz; kredi zorunlu değil
+- İçerik: duvar, zemin, pencere, kapı, sandalye, masa, çekmece, komodin, kitaplık, masa, yatak, koltuk, sehpa, raf, lamba, bitki, tablo, TV, perde ve küçük dekorlar
+- KELEPİR rolü: başlangıç odası ve erken dönem küçük ev iç mekânlarının ana görsel referansı
+- İlk kullanım: `data/pixelAssets.ts` içindeki hazır room preview / fallback sahneleri
 
-- Resmi kaynak: https://kenney.nl/assets/retro-urban-kit
-- Lisans: Creative Commons CC0 1.0
-- Rol: KELEPİR'in şehir ve dış mekân temel görsel ailesi
-- Kullanım: ana menü arka planı, giriş sahnesi, sokaklar, pazar çevresi, bina parçaları, tenteler, banklar, paletler, çöp konteynerleri, sokak lambaları, yollar, ağaçlar ve dönemle uyumlu ticari araçlar
-- Sabit açık kaynak ayna: https://github.com/GeorgeQLe/assets-2d-city
-- Sabit commit: `5cbe208ef7c630f3f54047c7ce75b9b8834a95ad`
+Bu paket, karşıdan okunabilen oda kompozisyonu nedeniyle eski izometrik Furniture Kit kullanımının yerini alır.
 
-Projede `data/worldAssets.ts` bu sürümü sabitler. Görseller mümkün olduğunca doğrudan bu sabit commit altındaki hazır preview/render dosyalarından kullanılır. Böylece ana menüden dünya haritasına kadar aynı perspektif ve malzeme dili korunur.
+## Aktif şehir / dış mekân ailesi — GrafxKid City Mega Pack
 
-Aynı açık kütüphane ayrıca Kenney RPG Urban Pack ve Tiny Town paketlerini içerir. Bunlar yalnızca Retro Urban ile stil uyumu bozulmadığında tamamlayıcı olarak kullanılacaktır.
-
-## Ana iç mekân ailesi — Kenney Furniture Kit
-
-- Resmi kaynak: https://kenney.nl/assets/furniture-kit
-- Lisans: Creative Commons CC0 1.0
-- Paket: 140 adet 3D mobilya ve iç mekân öğesi; hazır isometrik PNG renderları da bulunur
-- Sabit açık kaynak ayna: https://github.com/eturner58/game-assets
-- Sabit commit: `fc2cd355a8e7c1d8e625fd650abf64f50a1fddaa`
-- Rol: KELEPİR'in oda, ev, küçük dükkân ve erken dönem iç mekânlarının ana görsel ailesi
-- İlk kullanım: başlangıç odasında hazır isometrik yatak, masa, masa sandalyesi, çekmeceli komodin, TV dolabı, eski TV, anten, radyo, masa ve ayaklı lamba, kitaplık, kitaplar, karton kutular, halı, bitki, çöp kovası, duvar, pencere, zemin ve kapı
-- Etkileşim kuralı: görünmez hotspot yerine mümkün olduğunca doğrudan hazır prop assetinin kendisi tıklanabilir alan olur
-
-`data/worldAssets.ts` iç mekân PNG'lerini aynı sabit commit altında toplar. Böylece oda tek parça özel çizim yerine hazır assetlerden kurulan, değiştirilebilir bir oyun sahnesidir.
-
-## Tamamlayıcı iç mekân adayı — PSX Retro Props Pack
-
-- Kaynak: https://lewie.itch.io/psx-retro-props-pack
+- Kaynak: https://opengameart.org/content/city-mega-pack
+- Yazar: GrafxKid
 - Lisans: CC0
-- İçerik örnekleri: yatak, masa, sandalye, lamba, raf, çekmece, kitaplar, buzdolabı, gazete standı, hoparlör, el aletleri, matkap, kalem, makas ve diğer günlük prop'lar
-- Kullanım kuralı: Furniture Kit'te bulunmayan ve görsel dili bozmayacak dönem aksesuarlarında tamamlayıcı olarak değerlendirilebilir.
+- Stil: 2D pixel art, side-scroller şehir
+- İçerik: vatandaşlar, mobilya, yiyecekler, şehir binaları, dükkân içleri, sokak objeleri, yollar ve arka planlar
+- KELEPİR rolü: Kavşak / Eskiyaka sokakları, Bit Pazarı çevresi, dükkân cepheleri, ana menü ve genel şehir dili
+- Dosya: https://opengameart.org/sites/default/files/CITY_MEGA.png
 
-## Kenney — Generic Items
+Ana dış dünya pixel ailesi olarak değerlendirilir. Pazar ve sokak yeniden kurulurken eski 3D/isometrik şehir renderlarının yerine geçecektir.
 
-- Resmi kaynak: https://kenney.nl/assets/generic-items
-- Lisans: Creative Commons CC0 1.0
-- Paket türü: 2D item / tools / household / tech
-- KELEPİR kullanımı: erken oyun envanter ikonları, küçük eşya adayları ve geliştirme prototipleri
-- Repo içindeki tarayıcı: `/art-lab`
+## Aktif elektronik ürün ailesi — Airos 32px Electronics
 
-Geliştirme ortamında görseller, `eturner58/game-assets` adlı açık Kenney aynasından sabit bir commit SHA üzerinden çağrılır. Böylece paketin içeriği sonradan değişse bile KELEPİR'in kullandığı sürüm sabit kalır.
-
-## Kenney — Character Pack
-
-- Lisans: Creative Commons CC0 1.0
-- Kullanım: müşteri, satıcı ve mahalle NPC'leri
-- Modüler yüz, saç, ten ve kıyafet parçaları kullanılır.
-- Not: küçük avatar kullanımında uygundur. Büyük ana müşteri sunumlarında daha profesyonel ve aynı sanat dilinde hazır bir karakter/portre paketi bulunursa öncelik ona verilecektir.
-
-## Kenney — UI Pack 2.0
-
-- Lisans: Creative Commons CC0 1.0
-- Kullanım: buton, ok, checkbox, slider ve durum ikonları
-- Ana palet: Green + Grey, riskli aksiyonlarda Red
-- Kural: ekran CSS'i bu hazır UI görsellerinin yerine yeniden düz prototip buton çizmemelidir.
-
-## 3dmodelscc0 Electronics & Gadgets
-
-- Kaynak: https://3dmodelscc0.itch.io/free-cc0-electronics-gadgets-pack
+- Kaynak: https://opengameart.org/content/32px-electronics
+- Yazar: Airos
 - Lisans: CC0
-- İçerik: console, digital camera, flashlight, microphone, radio, router, security camera, USB stick, VR goggles, radiophone
-- Planlanan kullanım: model-spesifik veya büyük ürün kartları için sabit kamera 2D render kaynağı
+- Stil: 32x32 pixel art
+- İçerik: boombox / radyo, el telsizi, laptop, kameralar, handheld cihazlar ve küçük elektronikler
+- KELEPİR rolü: 2002 dönemine uyan küçük elektronik ürün sprite'ları ve ilk Raksen için geçici pixel temsil
+- Kullanılan sheet: https://opengameart.org/sites/default/files/misc_electronics_sheet_0.png
 
-## Retro Office Pack
+Model-spesifik ürünlerde ürün adı ile görselin dönemi ve formu ayrıca doğrulanır. Aynı sprite farklı ürün adlarıyla gelişigüzel tekrar kullanılmaz.
 
-- Kaynak: https://retroblockstudio.itch.io/retro-office-pack
+## Ücretsiz tamamlayıcı aday — GandalfHardcore Modern City 32x32
+
+- Kaynak: https://gandalfhardcore.itch.io/free-pixel-art-sidescroller-asset-pack-32x32-city
+- Fiyat: ücretsiz / name-your-own-price
+- Stil: modern side-scroller pixel art
+- Lisans notu: kişisel ve ticari projelerde kullanım ve düzenleme serbest; yeniden satış / paketleme yasak
+- İçerik: zemin, asfalt, bina cepheleri, pencere, kapı, shop tile, trafik ışığı, tabela ve şehir arka planları
+- KELEPİR rolü: City Mega Pack'in karşılamadığı dış mekân parçalarında ancak stil uyumu korunursa tamamlayıcı
+
+## Ücretsiz tamamlayıcı aday — OdiStudio Pixel Art Bedroom
+
+- Kaynak: https://odistudio-games.itch.io/pixel-art-room-asset-pack
+- Lisans: CC BY 4.0
+- Fiyat: ücretsiz / name-your-own-price
+- Stil: detaylı 2D pixel art bedroom
+- İçerik: hazır yatak odası sahnesi, yatak, masa, sandalye, bilgisayar, raf, koltuk, saat, poster ve diğer oda parçaları
+- KELEPİR rolü: Brysia paketinde ihtiyaç karşılanmazsa ikinci iç mekân kaynağı
+
+## Eski / emekliye ayrılan ana aileler
+
+### Kenney Furniture Kit
+
+- Kaynak: https://kenney.nl/assets/furniture-kit
 - Lisans: CC0
-- İçerik: retro PC, vintage TV, old radio, 90'lar tipi telefon, desk, chair, flashlight ve dekor objeleri
-- Planlanan kullanım: 1990'lar / 2000'lerin başı elektronik, oda, işyeri ve dükkân prop'ları
+- Durum: **ana oyun sahnelerinde emekli**
+- Sebep: hazır PNG'ler izometrik olduğu için yeni karşıdan 2D pixel art yönüyle uyuşmuyor.
+- Not: yalnızca geliştirme araçlarında veya görünmeyen prototiplerde kalabilir.
 
-## OpenGameArt Retro Items
+### Kenney Retro Urban Kit
+
+- Kaynak: https://kenney.nl/assets/retro-urban-kit
+- Lisans: CC0
+- Durum: **ana şehir görsel ailesi olmaktan çıkarıldı**
+- Sebep: perspektif ve render dili yeni front-facing pixel art hedefiyle uyuşmuyor.
+
+### Kenney Character Pack
+
+- Lisans: CC0
+- Durum: büyük müşteri / satıcı sunumunda kullanılmayacak.
+- Sebep: önceki Serkan ekranında karakterler diğer sahne assetlerinden kopuk ve prototip hissinde görünüyordu.
+
+### Kenney UI Pack 2.0
+
+- Lisans: CC0
+- Durum: ihtiyaç halinde ikon kaynağı olarak kalabilir; ana oyuncu UI'ı yeni pixel art stile uyarlanacaktır.
+
+## Diğer doğrulanmış kaynaklar
+
+### OpenGameArt Retro Items
 
 - Kaynak: https://opengameart.org/content/retro-items
 - Lisans: CC0
-- İçerik: kamera, kaset/kasetçalar, telefon, radyo, VCR/VHS, kulaklık, saat ve benzeri retro item'lar
-- Not: pixel art olduğu için ana görsel diline uymadığı ekranlarda kullanılmaz; yalnızca stil uyumu sağlanırsa değerlendirilir.
+- İçerik: kamera, kaset / kasetçalar, telefon, radyo, VCR / VHS, kulaklık, saat vb.
+- Kullanım: pixel stil ve dönem uyumu doğrulandığında ikinci el ürün havuzu
 
-## CC0Tree
+### 3dmodelscc0 Electronics & Gadgets
 
-- Kaynak: https://github.com/SkywolfGameStudios/CC0Tree
+- Kaynak: https://3dmodelscc0.itch.io/free-cc0-electronics-gadgets-pack
 - Lisans: CC0
-- İçerik: büyüyen düşük poligon 3D prop ve çevre asset kütüphanesi
-- Planlanan kullanım: ileride dükkân, depo, sokak, tamir alanı ve büyük prop havuzu
+- Durum: yeni ana stil 2D pixel olduğu için yalnızca son çare kaynak; doğrudan 3D render ana sahneye konmaz.
+
+### PSX Retro Props Pack
+
+- Kaynak: https://lewie.itch.io/psx-retro-props-pack
+- Lisans: CC0
+- Durum: yeni ana stil nedeniyle doğrudan görünür sahne asseti olarak kullanılmaz.
 
 ## Dönem ve konsept kontrolü
 
-Bir asset lisans ve stil olarak uygun olsa bile sahnenin yılına uymuyorsa kullanılmaz. 2002 başlangıcında görünen telefon, araç, bilgisayar, tabela, mobilya ve mağaza aksesuarlarının dönem hissi ayrıca kontrol edilir. Oyunda yıllar ilerledikçe asset havuzu da dönemlere göre açılır.
+Bir asset ücretsiz ve lisanslı olsa bile 2002 başlangıç yılına uymuyorsa kullanılmaz. Telefon, otomobil, bilgisayar, televizyon, konsol, tabela, mobilya ve mağaza aksesuarları oyun zamanına göre açılır.
 
-## Sanat politikası
+## Uygulama kuralı
 
-Hazır asset bulunamadığında sıfırdan çizime dönülmez. Arama alanı genişletilir veya uygun bir CC0 3D model bulunup KELEPİR'in sabit render şablonuyla 2D'ye çevrilir. Model-spesifik telefon, konsol, otomobil, traktör ve koleksiyonluk ürünlerde de aynı yaklaşım geçerlidir.
+Yeni ekran yapılırken önce bu dosyadaki **aktif** ailelere bakılır. Eksik parça varsa side-view / front-facing pixel art içinde yeni ücretsiz kaynak aranır ve oyuna girmeden önce buraya kaynak ve lisans notu eklenir. Uygun asset bulunamadığı için izometrik veya rastgele paket kullanmak kabul edilmez.
