@@ -16,6 +16,7 @@ export default function Home() {
   const [foundPlayer, setFoundPlayer] = useState(false);
   const [cleanedPlayer, setCleanedPlayer] = useState(false);
   const [familyPermission, setFamilyPermission] = useState(false);
+  const [firstItemSold, setFirstItemSold] = useState(false);
   const [message, setMessage] = useState("Odan sessiz. Cebinde tek kuruş yok.");
 
   const startGame = () => {
@@ -24,6 +25,11 @@ export default function Home() {
   };
 
   const inspectBed = () => {
+    if (firstItemSold) {
+      setMessage("Yatağın altı artık boş. Raksen'i sattın, aynı yerden ikinci kez sermaye çıkmayacak.");
+      return;
+    }
+
     if (!foundPlayer) {
       setFoundPlayer(true);
       setMessage("Yatağın altında toz içinde eski bir kasetçalar buldun. Raksen RX-40. Çalışıyor mu henüz bilmiyorsun.");
@@ -48,6 +54,7 @@ export default function Home() {
   const completeFirstSale = (amount: number) => {
     setMoney((current) => current + amount);
     setFoundPlayer(false);
+    setFirstItemSold(true);
     setScene("room");
     setMessage(`İlk satışını yaptın. Cebinde artık ${amount.toLocaleString("tr-TR")} ₺ var. Küçük görünüyor ama sıfırdan ilk sermayen bu.`);
   };
