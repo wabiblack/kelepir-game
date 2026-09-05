@@ -41,14 +41,6 @@ export default function RoomHome({
 
   return (
     <section className={styles.shell}>
-      <div className={styles.sceneHeader}>
-        <div>
-          <span>ESKİYAKA • KAVŞAK</span>
-          <strong>Odan</strong>
-        </div>
-        <small>{firstItemSold ? "Pazar erişimi açık" : "03 Mart 2002"}</small>
-      </div>
-
       <div className={styles.sceneFrame}>
         <div className={styles.scene} aria-label="Eskiyaka'daki küçük oda">
           <div className={styles.backdrop} aria-hidden="true">
