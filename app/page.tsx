@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type Scene = "menu" | "intro" | "room";
@@ -45,7 +46,8 @@ export default function Home() {
           <h1>KELEPİR</h1>
           <p className="tagline">Sıfır paran var. Değeri başkalarının gözden kaçırdığı yerde bul.</p>
           <button className="primary-button" onClick={startGame}>Yeni Oyun</button>
-          <span className="version">prototip v0.2 • asset sistemi</span>
+          <Link className="asset-lab-link" href="/art-lab">Ücretsiz asset paketini aç</Link>
+          <span className="version">prototip v0.3 • CC0 asset lab</span>
         </section>
       </main>
     );
@@ -118,7 +120,7 @@ export default function Home() {
                 />
                 <span className="asset-state">{cleanedPlayer ? "TEMİZ" : "KİRLİ"}</span>
               </div>
-              <p className="art-note">Artık ürün çizimi CSS şekilleri değil, bağımsız SVG asset.</p>
+              <p className="art-note">Ürün görselleri bağımsız asset olarak tutuluyor. Hazır CC0 paketler küçük eşya ve envanter tarafında kullanılacak.</p>
             </div>
 
             <div className="item-info">
