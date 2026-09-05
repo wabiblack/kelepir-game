@@ -8,7 +8,6 @@ import OpeningScene from "@/components/OpeningScene";
 
 type Scene = "menu" | "intro" | "room" | "market" | "sandbox";
 
-const playerDirtyAsset = "assets/items/cassette/raksen-rx40/dirty.svg";
 const playerCleanAsset = "assets/items/cassette/raksen-rx40/clean.svg";
 
 export default function Home() {
@@ -141,8 +140,6 @@ export default function Home() {
       </header>
 
       <RoomHome
-        playerDirtyAsset={playerDirtyAsset}
-        playerCleanAsset={playerCleanAsset}
         message={message}
         foundPlayer={foundPlayer}
         cleanedPlayer={cleanedPlayer}
