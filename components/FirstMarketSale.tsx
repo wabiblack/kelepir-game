@@ -7,6 +7,7 @@ import {
   customerShirtSamples,
   customerSkinHeads,
 } from "@/data/assetPacks";
+import { worldAssets } from "@/data/worldAssets";
 import { generateBuyerDialogue } from "@/lib/buyerDialogue";
 import GameButton from "@/components/ui/GameButton";
 import styles from "./FirstMarketSale.module.css";
@@ -57,15 +58,12 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
 
   function inspect() {
     setPhase("bargain");
-    say("inceleme", undefined, 80);
-    window.setTimeout(() => {
-      const result = generateBuyerDialogue(
-        { situation: "yaklasti", itemName: ITEM_NAME, offer: 80, year: 2002 },
-        recentIds,
-      );
-      setDialogue(`${result.text} Çalışması belirsiz olduğu için ilk teklifim 80 ₺.`);
-      setRecentIds((current) => [result.id, ...current].slice(0, 7));
-    }, 650);
+    const result = generateBuyerDialogue(
+      { situation: "inceleme", itemName: ITEM_NAME, offer: 80, year: 2002 },
+      recentIds,
+    );
+    setDialogue(`${result.text} Çalışması belirsiz, ilk teklifim 80 ₺.`);
+    setRecentIds((current) => [result.id, ...current].slice(0, 7));
   }
 
   function accept(price = offer) {
@@ -115,34 +113,46 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
     <section className={styles.screen}>
       <div className={styles.marketTop}>
         <div>
-          <p className={styles.kicker}>CUMARTESİ PAZARI • 03 MART 2002</p>
-          <h2>İlk Pazarlık</h2>
+          <span>CUMARTESİ PAZARI • 03 MART 2002</span>
+          <strong>İlk Pazarlık</strong>
         </div>
-        <span className={styles.location}>ESKİYAKA</span>
+        <small>ESKİYAKA</small>
       </div>
 
-      <div className={styles.scene}>
-        <div className={styles.stall}>
-          <div className={styles.awning} aria-hidden="true" />
-          <span className={styles.sign}>İKİNCİ EL • PAZAR</span>
-          <div className={styles.itemStage}>
+      <div className={styles.sceneFrame}>
+        <div className={styles.scene}>
+          <img className={styles.backWall} src={worldAssets.architecture.wallA} alt="" aria-hidden="true" />
+          <img className={styles.backWallTwo} src={worldAssets.architecture.wallB} alt="" aria-hidden="true" />
+          <img className={styles.ground} src={worldAssets.roads.asphaltDamaged} alt="" aria-hidden="true" />
+          <img className={styles.awning} src={worldAssets.props.awningWide} alt="Pazar tentesi" />
+          <img className={styles.pallet} src={worldAssets.props.pallet} alt="Ahşap palet" />
+          <img className={styles.boxOpen} src={worldAssets.interior.boxOpen} alt="Açık karton kutu" />
+          <img className={styles.boxClosed} src={worldAssets.interior.boxClosed} alt="Karton kutu" />
+          <img className={styles.truck} src={worldAssets.props.truckGrey} alt="Pazarda park etmiş eski kamyon" />
+          <img className={styles.stallTable} src={worldAssets.interior.desk} alt="İkinci el tezgâhı" />
+
+          <div className={styles.itemSpot}>
             <img src={itemAsset} alt="Tezgâhtaki Raksen RX-40 kasetçalar" />
-            <span>ÇALIŞMASI TEST EDİLMEDİ</span>
-          </div>
-        </div>
-
-        <div className={styles.customerPanel}>
-          <div className={styles.portrait}>
-            <img className={styles.shirt} src={buyer.shirt.src} alt="" />
-            <img className={styles.head} src={buyer.skin.src} alt="" />
-            <img className={styles.face} src={buyer.face.src} alt="" />
-            <img className={styles.hair} src={buyer.hair.src} alt="" />
+            <span>TEST EDİLMEDİ</span>
           </div>
 
-          <div className={styles.customerInfo}>
-            <span>{buyer.description}</span>
-            <h3>{buyer.name}</h3>
-            <small>{buyer.age} yaş • temkinli alıcı</small>
+          <div className={styles.buyerSpot}>
+            <div className={styles.portrait} aria-hidden="true">
+              <img className={styles.shirt} src={buyer.shirt.src} alt="" />
+              <img className={styles.head} src={buyer.skin.src} alt="" />
+              <img className={styles.face} src={buyer.face.src} alt="" />
+              <img className={styles.hair} src={buyer.hair.src} alt="" />
+            </div>
+            <div>
+              <span>{buyer.description}</span>
+              <strong>{buyer.name}</strong>
+              <small>{buyer.age} yaş • temkinli alıcı</small>
+            </div>
+          </div>
+
+          <div className={styles.marketTag}>
+            <span>İKİNCİ EL</span>
+            <strong>Raksen RX-40</strong>
           </div>
         </div>
       </div>
@@ -162,34 +172,32 @@ export default function FirstMarketSale({ itemAsset, onSold, onLeave }: Props) {
       {phase === "bargain" && (
         <div className={styles.tradePanel}>
           <div className={styles.offerBox}>
-            <span>MEVCUT TEKLİF</span>
+            <span>TEKLİF</span>
             <strong>{offer} ₺</strong>
-            <small>Alıcının sabrı: {"●".repeat(patience)}{"○".repeat(3 - patience)}</small>
+            <small>Sabır {"●".repeat(patience)}{"○".repeat(3 - patience)}</small>
           </div>
 
           <div className={styles.actions}>
             <GameButton type="button" onClick={() => accept()}>{offer} ₺ kabul et</GameButton>
             <GameButton variant="secondary" type="button" onClick={() => counter(offer + 20)}>{offer + 20} ₺ iste</GameButton>
             <GameButton variant="secondary" type="button" onClick={() => counter(offer + 50)}>{offer + 50} ₺ iste</GameButton>
-            <GameButton variant="quiet" type="button" onClick={walkAway}>Satmaktan vazgeç</GameButton>
+            <GameButton variant="quiet" type="button" onClick={walkAway}>Vazgeç</GameButton>
           </div>
         </div>
       )}
 
       {phase === "sold" && salePrice !== null && (
         <div className={styles.result}>
-          <span>İLK SATIŞ</span>
-          <strong>+{salePrice} ₺</strong>
-          <p>Sıfırdan ilk sermayeni çıkardın. Kasetçalar artık Serkan&apos;ın, para cebinde.</p>
+          <div><span>İLK SATIŞ</span><strong>+{salePrice} ₺</strong></div>
+          <p>Kasetçalar Serkan&apos;ın, ilk sermaye cebinde.</p>
           <GameButton type="button" onClick={() => onSold(salePrice)}>Parayı al ve eve dön</GameButton>
         </div>
       )}
 
       {phase === "left" && (
         <div className={styles.result}>
-          <span>PAZARLIK BİTTİ</span>
-          <strong>Satış yok</strong>
-          <p>Ürün sende kaldı. Başka müşteri bekleyebilir veya sonra tekrar pazara gelebilirsin.</p>
+          <div><span>PAZARLIK BİTTİ</span><strong>Satış yok</strong></div>
+          <p>Ürün sende kaldı. Başka müşteri bekleyebilirsin.</p>
           <GameButton type="button" onClick={onLeave}>Eve dön</GameButton>
         </div>
       )}
