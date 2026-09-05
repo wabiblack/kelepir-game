@@ -1,3 +1,5 @@
+import { worldAssets } from "@/data/worldAssets";
+
 export type MarketCategory =
   | "Elektronik"
   | "Alet"
@@ -14,7 +16,7 @@ export type MarketItemTemplate = {
   category: MarketCategory;
   baseValue: number;
   description: string;
-  assetQuery: string;
+  asset: string;
 };
 
 export type MarketOffer = {
@@ -23,6 +25,7 @@ export type MarketOffer = {
   name: string;
   category: MarketCategory;
   description: string;
+  asset: string;
   seller: string;
   askingPrice: number;
   minimumPrice: number;
@@ -39,6 +42,7 @@ export type InventoryItem = {
   templateId: string;
   name: string;
   category: MarketCategory;
+  asset: string;
   condition: ItemCondition;
   purchasePrice: number;
   expectedValue: number;
@@ -57,6 +61,9 @@ export type LedgerEntry = {
   label: string;
 };
 
+// The starter catalog deliberately contains only items whose visuals are already
+// verified in the pinned Kenney Furniture Kit. We expand the catalog only after
+// a matching ready asset has been verified.
 export const MARKET_CATALOG_2002: MarketItemTemplate[] = [
   {
     id: "portable-radio",
@@ -64,79 +71,71 @@ export const MARKET_CATALOG_2002: MarketItemTemplate[] = [
     category: "Elektronik",
     baseValue: 85,
     description: "Pilli küçük radyo. Anteni ve pil yatağı kontrol edilmeli.",
-    assetQuery: "portable radio",
+    asset: worldAssets.interior.radio,
   },
   {
-    id: "corded-phone",
-    name: "Kablolu masa telefonu",
-    category: "Elektronik",
-    baseValue: 70,
-    description: "Ev tipi tuşlu telefon. Ahize kablosu en sık sorun çıkaran parça.",
-    assetQuery: "corded telephone",
-  },
-  {
-    id: "desktop-speakers",
-    name: "İkili bilgisayar hoparlörü",
+    id: "desktop-speaker",
+    name: "Bilgisayar hoparlörü",
     category: "Elektronik",
     baseValue: 95,
-    description: "Masaüstü bilgisayar için küçük hoparlör çifti.",
-    assetQuery: "computer speakers",
+    description: "Masaüstü bilgisayar için eski tip hoparlör. Kablo ve cızırtı önemli.",
+    asset: worldAssets.interior.speaker,
   },
   {
-    id: "corded-gamepad",
-    name: "Kablolu oyun kolu",
-    category: "Hobi",
-    baseValue: 75,
-    description: "Eski tip PC ve oyun sistemlerinde kullanılan kablolu kontrolcü.",
-    assetQuery: "wired gamepad",
-  },
-  {
-    id: "film-camera",
-    name: "Analog fotoğraf makinesi",
-    category: "Hobi",
-    baseValue: 150,
-    description: "Filmli kompakt makine. Flaş ve pil kapağı önemli.",
-    assetQuery: "film camera",
-  },
-  {
-    id: "corded-drill",
-    name: "Kablolu matkap",
-    category: "Alet",
-    baseValue: 180,
-    description: "Ev tipi matkap. Mandren, kablo ve kömür sesi kontrol edilmeli.",
-    assetQuery: "corded drill",
-  },
-  {
-    id: "metal-toolbox",
-    name: "Metal takım çantası",
-    category: "Alet",
-    baseValue: 110,
-    description: "İçi karışık el aletleriyle dolu eski metal çanta.",
-    assetQuery: "metal toolbox",
+    id: "vintage-tv",
+    name: "Küçük tüplü televizyon",
+    category: "Elektronik",
+    baseValue: 130,
+    description: "Küçük CRT televizyon. Görüntü, anten girişi ve açılış sesi kontrol edilmeli.",
+    asset: worldAssets.interior.vintageTv,
   },
   {
     id: "desk-lamp",
     name: "Masa lambası",
     category: "Ev eşyası",
     baseValue: 55,
-    description: "Ayarlanabilir kollu masa lambası. Kablo ve duy kontrol edilmeli.",
-    assetQuery: "desk lamp",
+    description: "Masa tipi lamba. Kablo, anahtar ve duy kontrol edilmeli.",
+    asset: worldAssets.interior.tableLamp,
   },
   {
-    id: "kitchen-scale",
-    name: "Mutfak tartısı",
+    id: "floor-lamp",
+    name: "Ayaklı lamba",
     category: "Ev eşyası",
-    baseValue: 65,
-    description: "Mekanik mutfak tartısı. İbre sıfıra dönüyor mu bakılmalı.",
-    assetQuery: "kitchen scale",
+    baseValue: 80,
+    description: "Salon tipi ayaklı lamba. Gövdesi sağlam ama elektrik aksamı kontrol edilmeli.",
+    asset: worldAssets.interior.floorLamp,
   },
   {
-    id: "bike-pump",
-    name: "Bisiklet pompası",
-    category: "Bisiklet",
-    baseValue: 45,
-    description: "Ayaklı eski pompa. Hortum ve conta kaçak yapabiliyor.",
-    assetQuery: "bicycle pump",
+    id: "desk-chair",
+    name: "Döner masa sandalyesi",
+    category: "Ev eşyası",
+    baseValue: 75,
+    description: "Eski çalışma sandalyesi. Tekerler, piston ve sırt bağlantısı kontrol edilmeli.",
+    asset: worldAssets.interior.deskChair,
+  },
+  {
+    id: "drawer-table",
+    name: "Çekmeceli komodin",
+    category: "Ev eşyası",
+    baseValue: 90,
+    description: "Küçük çekmeceli mobilya. Raylar, kulplar ve gövde şişmesi kontrol edilmeli.",
+    asset: worldAssets.interior.sideTableDrawers,
+  },
+  {
+    id: "open-bookcase",
+    name: "Açık kitaplık",
+    category: "Ev eşyası",
+    baseValue: 105,
+    description: "Dar ahşap kitaplık. Raflarda eğilme ve sallanma var mı bakılmalı.",
+    asset: worldAssets.interior.bookcase,
+  },
+  {
+    id: "small-plant",
+    name: "Saksılı salon bitkisi",
+    category: "Ev eşyası",
+    baseValue: 40,
+    description: "Saksısıyla satılan küçük bitki. Saksıda çatlak ve yapraklarda kuruma kontrol edilmeli.",
+    asset: worldAssets.interior.smallPlant,
   },
 ];
 
@@ -194,6 +193,7 @@ export function generateMarketOffers(count = 4): MarketOffer[] {
       name: template.name,
       category: template.category,
       description: template.description,
+      asset: template.asset,
       seller: pick(sellerNames),
       askingPrice,
       minimumPrice: round5(askingPrice * (1 - flexibility)),
@@ -217,6 +217,7 @@ export function makeInventoryItem(offer: MarketOffer, paidPrice: number, acquire
     templateId: offer.templateId,
     name: offer.name,
     category: offer.category,
+    asset: offer.asset,
     condition: offer.condition,
     purchasePrice: paidPrice,
     expectedValue: offer.expectedValue,
