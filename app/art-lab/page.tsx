@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { assetPackMeta, kenneyGenericItems } from "@/data/assetPacks";
+import { assetPackMeta, customerPackPreview, kenneyGenericItems } from "@/data/assetPacks";
 
 export default function ArtLabPage() {
   return (
@@ -9,12 +9,34 @@ export default function ArtLabPage() {
           <p className="eyebrow">KELEPİR • GELİŞTİRİCİ EKRANI</p>
           <h1>Asset Lab</h1>
           <p>
-            {assetPackMeta.kenneyGenericItems.name} paketindeki CC0 adayları.
-            Burada beğendiğimiz parçaları oyunun eşya kataloğuna alacağız.
+            Ücretsiz ve uyumlu görsel paketlerini burada topluyoruz. Oyuna sadece aynı sanat dilini koruyan parçalar giriyor.
           </p>
         </div>
         <Link className="asset-lab-back" href="/">Oyuna dön</Link>
       </header>
+
+      <section className="asset-pack-switcher">
+        <article className="asset-pack-card">
+          <div>
+            <p className="eyebrow">EŞYALAR</p>
+            <h2>{assetPackMeta.kenneyGenericItems.name}</h2>
+            <p>{assetPackMeta.kenneyGenericItems.usage}</p>
+          </div>
+          <strong>{assetPackMeta.kenneyGenericItems.itemCount} asset</strong>
+        </article>
+
+        <Link className="asset-pack-card customer-pack-link" href="/art-lab/customers">
+          <div className="asset-pack-thumb">
+            <img src={customerPackPreview} alt="Müşteri karakter paketi" />
+          </div>
+          <div>
+            <p className="eyebrow">MÜŞTERİLER / NPC</p>
+            <h2>{assetPackMeta.kenneyCharacters.name}</h2>
+            <p>Ten, yüz, saç ve kıyafet parçalarıyla yüzlerce farklı müşteri üret.</p>
+            <strong>Müşteri paketini aç →</strong>
+          </div>
+        </Link>
+      </section>
 
       <section className="asset-lab-meta">
         <div><span>Paket</span><strong>{assetPackMeta.kenneyGenericItems.name}</strong></div>
