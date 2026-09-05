@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import GameButton from "@/components/ui/GameButton";
 import { pixelAssets } from "@/data/pixelAssets";
 import styles from "./RoomHome.module.css";
@@ -33,55 +34,65 @@ export default function RoomHome({
   onGoMarket,
   onGoSandbox,
 }: Props) {
-  const spriteStyle = { backgroundImage: `url(${pixelAssets.electronics.miscSheet})` };
+  const [roomSrc, setRoomSrc] = useState(pixelAssets.room.scene);
+  const [roomVisible, setRoomVisible] = useState(true);
+
+  function handleRoomError() {
+    if (roomSrc !== pixelAssets.room.fallbackScene) {
+      setRoomSrc(pixelAssets.room.fallbackScene);
+      return;
+    }
+    setRoomVisible(false);
+  }
 
   return (
     <section className={styles.shell}>
       <div className={styles.sceneFrame}>
-        <div className={styles.scene} aria-label="Eskiyaka'daki küçük oda, karşıdan 2D pixel görünüm">
-          <img
-            className={styles.roomArt}
-            src={pixelAssets.room.scene}
-            alt="Eskiyaka'daki küçük pixel art oda"
-            onError={(event) => {
-              event.currentTarget.onerror = null;
-              event.currentTarget.src = pixelAssets.room.fallbackScene;
-            }}
+        <div className={styles.scene} aria-label="Eskiyaka'daki oda, karşıdan görünen 2D pixel art sahne">
+          {roomVisible && (
+            <img
+              className={styles.roomArt}
+              src={roomSrc}
+              alt=""
+              aria-hidden="true"
+              onError={handleRoomError}
+            />
+          )}
+
+          <button
+            className={`${styles.hotspot} ${styles.bedHotspot}`}
+            type="button"
+            onClick={onInspectBed}
+            aria-label="Yatak ve yatak altını incele"
           />
 
-          <div className={styles.sceneTag} aria-hidden="true">
-            <span>ESKİYAKA</span>
-            <strong>ODA</strong>
-          </div>
+          <button
+            className={`${styles.hotspot} ${styles.deskHotspot}`}
+            type="button"
+            onClick={onInspectDesk}
+            aria-label="Masayı incele"
+          />
 
-          <button className={`${styles.hotspot} ${styles.bedHotspot}`} type="button" onClick={onInspectBed}>
-            <span>Yatak altı</span>
-          </button>
+          <button
+            className={`${styles.hotspot} ${styles.drawerHotspot}`}
+            type="button"
+            onClick={onInspectDrawer}
+            aria-label="Çekmeceyi incele"
+          />
 
-          <button className={`${styles.hotspot} ${styles.deskHotspot}`} type="button" onClick={onInspectDesk}>
-            <span>Masa</span>
-          </button>
-
-          <button className={`${styles.hotspot} ${styles.drawerHotspot}`} type="button" onClick={onInspectDrawer}>
-            <span>Çekmece</span>
-          </button>
-
-          {firstItemSold ? (
-            <button className={`${styles.hotspot} ${styles.doorHotspot}`} type="button" onClick={onGoSandbox}>
-              <span>Bit Pazarı</span>
-            </button>
-          ) : (
-            <div className={`${styles.hotspot} ${styles.doorHotspot} ${styles.lockedHotspot}`} aria-hidden="true">
-              <span>Kapı</span>
-            </div>
+          {firstItemSold && (
+            <button
+              className={`${styles.hotspot} ${styles.doorHotspot}`}
+              type="button"
+              onClick={onGoSandbox}
+              aria-label="Odadan çıkıp Bit Pazarı'na git"
+            />
           )}
 
           {foundPlayer && (
-            <div className={`${styles.foundItem} ${cleanedPlayer ? styles.cleanedItem : ""}`} aria-label="Bulduğun Raksen RX-40 kasetçalar">
-              <div className={styles.pixelSpriteBox}>
-                <span className={styles.boomboxSprite} style={spriteStyle} />
-              </div>
-              <small>RAKSEN RX-40</small>
+            <div className={styles.foundBadge}>
+              <span>BULUNDU</span>
+              <strong>Raksen RX-40</strong>
             </div>
           )}
         </div>
@@ -95,9 +106,6 @@ export default function RoomHome({
 
         {foundPlayer && (
           <div className={styles.itemTray}>
-            <div className={styles.itemThumb}>
-              <span className={`${styles.boomboxSprite} ${cleanedPlayer ? styles.cleanSprite : ""}`} style={spriteStyle} />
-            </div>
             <div className={styles.itemMeta}>
               <strong>Raksen RX-40</strong>
               <span>{cleanedPlayer ? "Temiz" : "Tozlu"} • Çalışması bilinmiyor</span>
@@ -118,8 +126,8 @@ export default function RoomHome({
         {firstItemSold && !foundPlayer && (
           <div className={styles.marketDock}>
             <div>
-              <strong>Bit Pazarı açık</strong>
-              <span>Kapıya dokun veya buradan doğrudan çık.</span>
+              <strong>Bit Pazarı</strong>
+              <span>Kapıdan çık veya buradan pazara dön.</span>
             </div>
             <GameButton className={styles.compactButton} onClick={onGoSandbox}>Pazara çık</GameButton>
           </div>
