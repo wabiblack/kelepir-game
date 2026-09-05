@@ -28,13 +28,25 @@ Projede `data/worldAssets.ts` bu sürümü sabitler. Görseller mümkün olduğu
 
 Aynı açık kütüphane ayrıca Kenney RPG Urban Pack ve Tiny Town paketlerini içerir. Bunlar yalnızca Retro Urban ile stil uyumu bozulmadığında tamamlayıcı olarak kullanılacaktır.
 
-## İç mekân ana aday — PSX Retro Props Pack
+## Ana iç mekân ailesi — Kenney Furniture Kit
+
+- Resmi kaynak: https://kenney.nl/assets/furniture-kit
+- Lisans: Creative Commons CC0 1.0
+- Paket: 140 adet 3D mobilya ve iç mekân öğesi; hazır isometrik PNG renderları da bulunur
+- Sabit açık kaynak ayna: https://github.com/eturner58/game-assets
+- Sabit commit: `fc2cd355a8e7c1d8e625fd650abf64f50a1fddaa`
+- Rol: KELEPİR'in oda, ev, küçük dükkân ve erken dönem iç mekânlarının ana görsel ailesi
+- İlk kullanım: başlangıç odasında hazır isometrik yatak, masa, masa sandalyesi, çekmeceli komodin, TV dolabı, eski TV, anten, radyo, masa ve ayaklı lamba, kitaplık, kitaplar, karton kutular, halı, bitki, çöp kovası, duvar, pencere, zemin ve kapı
+- Etkileşim kuralı: görünmez hotspot yerine mümkün olduğunca doğrudan hazır prop assetinin kendisi tıklanabilir alan olur
+
+`data/worldAssets.ts` iç mekân PNG'lerini aynı sabit commit altında toplar. Böylece oda tek parça özel çizim yerine hazır assetlerden kurulan, değiştirilebilir bir oyun sahnesidir.
+
+## Tamamlayıcı iç mekân adayı — PSX Retro Props Pack
 
 - Kaynak: https://lewie.itch.io/psx-retro-props-pack
 - Lisans: CC0
-- Rol: oda, ev, küçük dükkân ve erken oyun iç mekânları
 - İçerik örnekleri: yatak, masa, sandalye, lamba, raf, çekmece, kitaplar, buzdolabı, gazete standı, hoparlör, el aletleri, matkap, kalem, makas ve diğer günlük prop'lar
-- Kullanım kuralı: ilk oda dahil mevcut geçici özel çizim mekânlar zamanla bu tür doğrulanmış hazır iç mekân assetleriyle değiştirilecek.
+- Kullanım kuralı: Furniture Kit'te bulunmayan ve görsel dili bozmayacak dönem aksesuarlarında tamamlayıcı olarak değerlendirilebilir.
 
 ## Kenney — Generic Items
 
