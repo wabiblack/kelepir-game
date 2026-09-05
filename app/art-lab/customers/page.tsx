@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./page.module.css";
 import {
   assetPackMeta,
   customerFaces,
@@ -11,15 +12,15 @@ import {
 
 function AssetStrip({ title, assets }: { title: string; assets: typeof customerFaces }) {
   return (
-    <section className="customer-part-section">
-      <div className="customer-part-heading">
+    <section className={styles.partSection}>
+      <div className={styles.partHeading}>
         <h2>{title}</h2>
         <span>{assets.length} örnek</span>
       </div>
-      <div className="customer-part-grid">
+      <div className={styles.partGrid}>
         {assets.map((asset) => (
-          <article className="customer-part-card" key={asset.id}>
-            <div className="customer-part-preview">
+          <article className={styles.partCard} key={asset.id}>
+            <div className={styles.partPreview}>
               <img src={asset.src} alt={asset.label} loading="lazy" />
             </div>
             <strong>{asset.label}</strong>
@@ -34,7 +35,7 @@ export default function CustomerAssetLabPage() {
   const characterPack = assetPackMeta.kenneyCharacters;
 
   return (
-    <main className="customer-lab-screen">
+    <main className={styles.screen}>
       <header className="asset-lab-header">
         <div>
           <p className="eyebrow">KELEPİR • NPC LAB</p>
@@ -47,11 +48,11 @@ export default function CustomerAssetLabPage() {
         <Link className="asset-lab-back" href="/art-lab">Asset Lab&apos;e dön</Link>
       </header>
 
-      <section className="customer-pack-hero">
-        <div className="customer-pack-preview">
+      <section className={styles.hero}>
+        <div className={styles.packPreview}>
           <img src={customerPackPreview} alt="Kenney Character Pack önizlemesi" />
         </div>
-        <div className="customer-pack-copy">
+        <div className={styles.packCopy}>
           <p className="eyebrow">ANA NPC PAKETİ</p>
           <h2>{characterPack.name}</h2>
           <p>{characterPack.usage}</p>
@@ -65,7 +66,7 @@ export default function CustomerAssetLabPage() {
         </div>
       </section>
 
-      <section className="customer-role-list">
+      <section className={styles.roles}>
         <span>Mahalleli</span>
         <span>Bit pazarı satıcısı</span>
         <span>Müşteri</span>
@@ -81,7 +82,7 @@ export default function CustomerAssetLabPage() {
       <AssetStrip title="Saç örnekleri" assets={customerHairSamples} />
       <AssetStrip title="Kıyafet örnekleri" assets={customerShirtSamples} />
 
-      <section className="customer-facial-hair">
+      <section className={styles.facialHair}>
         <div>
           <p className="eyebrow">EK VARYASYON</p>
           <h2>Sakal & bıyık paketi</h2>
@@ -90,7 +91,7 @@ export default function CustomerAssetLabPage() {
         <img src={customerFacialHairPreview} alt="Kenney sakal ve bıyık paketi önizlemesi" />
       </section>
 
-      <section className="customer-system-note">
+      <section className={styles.systemNote}>
         <strong>KELEPİR NPC sistemi</strong>
         <p>
           Görsel kombinasyon ayrı, karakter özellikleri ayrı tutulacak. Aynı görünümlü iki müşteri bile farklı bütçe,
