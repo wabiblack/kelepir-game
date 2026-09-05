@@ -8,9 +8,9 @@ import GameButton from "@/components/ui/GameButton";
 
 type Scene = "menu" | "intro" | "room" | "market" | "sandbox";
 
-const roomAsset = "/assets/rooms/eskiyaka/room_2002.svg";
-const playerDirtyAsset = "/assets/items/cassette/raksen-rx40/dirty.svg";
-const playerCleanAsset = "/assets/items/cassette/raksen-rx40/clean.svg";
+const roomAsset = "assets/rooms/eskiyaka/room_2002.svg";
+const playerDirtyAsset = "assets/items/cassette/raksen-rx40/dirty.svg";
+const playerCleanAsset = "assets/items/cassette/raksen-rx40/clean.svg";
 
 export default function Home() {
   const [scene, setScene] = useState<Scene>("menu");
