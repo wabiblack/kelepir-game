@@ -92,8 +92,18 @@ export default function Home() {
 
   if (scene === "sandbox") {
     return (
-      <main className="game-screen game-screen--fixed">
-        <header className="hud">
+      <main
+        className="game-screen game-screen--fixed"
+        style={{
+          height: "100dvh",
+          minHeight: "100dvh",
+          overflow: "hidden",
+          paddingBottom: 0,
+          display: "grid",
+          gridTemplateRows: "auto minmax(0, 1fr)",
+        }}
+      >
+        <header className="hud" style={{ position: "relative" }}>
           <div>
             <strong>03 Mart 2002</strong>
             <span>Pazar • 13:18 • Eskiyaka Bit Pazarı</span>
