@@ -21,7 +21,7 @@ const buyer = {
 
 const ITEM_NAME = "Raksen RX-40 kasetçalar";
 const MAX_PRICE = 130;
-const PIXEL_PORTRAIT = "https://opengameart.org/sites/default/files/portrait.png";
+const PIXEL_PORTRAIT = "https://opengameart.org/sites/default/files/Zabin.png";
 
 export default function FirstMarketSale({ itemAsset, money, onSold, onLeave }: Props) {
   const [phase, setPhase] = useState<Phase>("intro");
@@ -119,14 +119,15 @@ export default function FirstMarketSale({ itemAsset, money, onSold, onLeave }: P
         </header>
 
         <div className={styles.portraitPanel}>
-          <div className={styles.namePlate}>
-            <span>{buyer.description}</span>
-            <strong>{buyer.name}</strong>
-            <small>{buyer.age} yaş</small>
-          </div>
-
           <div className={styles.portraitStage}>
             <div className={styles.pixelGrid} aria-hidden="true" />
+
+            <div className={styles.personTag}>
+              <span>{buyer.description}</span>
+              <strong>{buyer.name}</strong>
+              <small>{buyer.age} yaş</small>
+            </div>
+
             {portraitVisible && (
               <img
                 className={styles.portraitArt}
@@ -138,10 +139,12 @@ export default function FirstMarketSale({ itemAsset, money, onSold, onLeave }: P
             )}
 
             <div className={styles.itemCard}>
-              <span>TEZGAHTAKİ ÜRÜN</span>
               <img src={itemAsset} alt="Raksen RX-40 kasetçalar" />
-              <strong>RAKSEN RX-40</strong>
-              <small>TEST EDİLMEDİ</small>
+              <div>
+                <span>ÜRÜN</span>
+                <strong>RAKSEN RX-40</strong>
+                <small>TEST EDİLMEDİ</small>
+              </div>
             </div>
           </div>
 
