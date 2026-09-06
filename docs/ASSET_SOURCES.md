@@ -54,6 +54,16 @@ Ana dış dünya pixel ailesi olarak değerlendirilir. Pazar ve sokak yeniden ku
 
 Model-spesifik ürünlerde ürün adı ile görselin dönemi ve formu ayrıca doğrulanır. Aynı sprite farklı ürün adlarıyla gelişigüzel tekrar kullanılmaz.
 
+## Aktif müşteri portresi — Zabin Pixel Portrait
+
+- Kaynak: https://opengameart.org/content/pixel-portrait-of-me-zabin
+- Yazarlar: NOOSKEWL, Zabin
+- Lisans: CC0
+- Dosya: `Zabin.png`
+- Stil: küçük boyutlu gerçek pixel art portre
+- KELEPİR rolü: ilk pazarlık ekranında Serkan için geçici insan portresi
+- Kural: portre doğal pixel ölçeğinde büyütülür; full-bleed dev görsel olarak kullanılmaz. Daha geniş ve tutarlı ücretsiz bir portre ailesi bulunduğunda tekil portre yerine aynı aileye geçilir.
+
 ## Ücretsiz tamamlayıcı aday — GandalfHardcore Modern City 32x32
 
 - Kaynak: https://gandalfhardcore.itch.io/free-pixel-art-sidescroller-asset-pack-32x32-city
