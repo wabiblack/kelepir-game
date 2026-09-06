@@ -26,7 +26,7 @@ export default function Home() {
     setFamilyPermission(false);
     setFirstItemSold(false);
     setMessage("Odan sessiz. Cebinde tek kuruş yok.");
-    window.localStorage.removeItem("kelepir-economy-v1");
+    window.localStorage.removeItem("kelepir-economy-v2");
     setScene("intro");
     window.setTimeout(() => setScene("room"), 1700);
   };
@@ -92,7 +92,7 @@ export default function Home() {
 
   if (scene === "sandbox") {
     return (
-      <main className="game-screen">
+      <main className="game-screen game-screen--fixed">
         <header className="hud">
           <div>
             <strong>03 Mart 2002</strong>
